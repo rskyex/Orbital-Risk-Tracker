@@ -6,7 +6,6 @@ export default function Footer() {
   const PAGES = [
     { label: "Home",         to: "/" },
     { label: "Jervis Radar", to: "/radar" },
-    { label: "Methodology",  to: "/methodology" },
     { label: "Data Sources", to: "/data-sources" },
   ];
   const STACK = ["React", "Vite", "react-globe.gl", "Recharts", "Three.js", "react-router-dom"];
@@ -51,6 +50,18 @@ export default function Footer() {
               {PAGES.map(({ label, to }) => (
                 <Link key={to} to={to} className="footer-link">{label}</Link>
               ))}
+              <button
+                className="footer-link"
+                onClick={() => {
+                  window.location.hash = "/";
+                  setTimeout(
+                    () => document.getElementById("methodology")?.scrollIntoView({ behavior: "smooth" }),
+                    80
+                  );
+                }}
+              >
+                Methodology
+              </button>
             </div>
           </div>
           <div>

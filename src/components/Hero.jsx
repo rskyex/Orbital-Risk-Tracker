@@ -2,26 +2,91 @@ import { useState, Suspense, lazy, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { INCIDENTS, INCIDENT_TYPES, getTypeColor } from "../data/incidents";
 import StarField from "./StarField";
-import IncidentModal from "./IncidentModal";
 
 const Globe = lazy(() => import("react-globe.gl"));
 
 const NIGHT_TEXTURE = "//unpkg.com/three-globe/example/img/earth-night.jpg";
 
-export default function Hero() {
-  const globeRef    = useRef(null);
-  const containerRef = useRef(null);
-  const [ready, setReady]     = useState(false);
-  const [hovered, setHovered] = useState(null);
-  const [modal, setModal]     = useState(null);
-  const [size, setSize]       = useState({ w: 700, h: 700 });
+// Works with HashRouter — no hash-in-hash problem
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
 
-  // Measure container for globe sizing
+// Info panel shown inside the globe area after clicking a pin
+function GlobeInfoPanel({ incident, onClose }) {
+  if (!incident) {
+    return (
+      <div className="globe-info-panel globe-info-panel--empty">
+        <span className="globe-info-empty-icon">🛰</span>
+        <span>Click a glowing marker to inspect the incident</span>
+      </div>
+    );
+  }
+
+  const typeColor = getTypeColor(incident.type);
+  const typeMeta  = INCIDENT_TYPES[incident.type] || {};
+  const riskIndex = (
+    ((5 - incident.legibility) + incident.reversibility + incident.escalation) / 3
+  ).toFixed(1);
+
+  return (
+    <div className="globe-info-panel" style={{ borderColor: typeColor + "66" }}>
+      <button className="globe-info-close" onClick={onClose} aria-label="Close">×</button>
+
+      <div className="globe-info-type" style={{ color: typeColor }}>
+        <span className="globe-info-type-dot" style={{ background: typeColor }} />
+        {typeMeta.label} · {incident.year}
+      </div>
+
+      <div className="globe-info-title">{incident.title}</div>
+
+      <div className="globe-info-meta">
+        <span>{incident.actor}</span>
+        <span className="globe-info-sep">·</span>
+        <span>{incident.orbit || incident.domain}</span>
+        <span className="globe-info-sep">·</span>
+        <span style={{ color: typeColor }}>Risk {riskIndex} / 5</span>
+      </div>
+
+      <p className="globe-info-summary">
+        {incident.summary.slice(0, 180)}
+        {incident.summary.length > 180 ? "…" : ""}
+      </p>
+
+      <Link to={`/incidents/${incident.id}`} className="globe-info-link">
+        Full incident profile →
+      </Link>
+    </div>
+  );
+}
+
+// Onboarding hint — pulses for 6 s then fades
+function OnboardHint({ visible }) {
+  return (
+    <div className={`globe-onboard-hint ${visible ? "" : "globe-onboard-hint--hidden"}`}>
+      <span className="globe-onboard-pulse" />
+      Click any glowing marker to inspect the incident
+    </div>
+  );
+}
+
+export default function Hero() {
+  const globeRef     = useRef(null);
+  const containerRef = useRef(null);
+  const [ready, setReady]       = useState(false);
+  const [hovered, setHovered]   = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [size, setSize]         = useState({ w: 700, h: 700 });
+  const [showHint, setShowHint] = useState(true);
+
+  // Measure container for explicit globe sizing
   useEffect(() => {
     const update = () => {
       if (containerRef.current) {
-        const { offsetWidth, offsetHeight } = containerRef.current;
-        setSize({ w: offsetWidth, h: offsetHeight });
+        setSize({
+          w: containerRef.current.offsetWidth,
+          h: containerRef.current.offsetHeight,
+        });
       }
     };
     update();
@@ -29,15 +94,21 @@ export default function Hero() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // Auto-rotate + initial altitude
+  // Auto-rotate after globe ready
   useEffect(() => {
     if (!ready || !globeRef.current) return;
-    const controls = globeRef.current.controls();
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.35;
-    controls.enableZoom = true;
+    const ctrl = globeRef.current.controls();
+    ctrl.autoRotate      = true;
+    ctrl.autoRotateSpeed = 0.35;
+    ctrl.enableZoom      = true;
     globeRef.current.pointOfView({ altitude: 2.0 }, 0);
   }, [ready]);
+
+  // Dismiss onboard hint after 6 s
+  useEffect(() => {
+    const t = setTimeout(() => setShowHint(false), 6000);
+    return () => clearTimeout(t);
+  }, []);
 
   const ringsData = INCIDENTS.map((inc) => ({
     ...inc,
@@ -50,18 +121,23 @@ export default function Hero() {
 
   const handleHover = (point) => {
     setHovered(point);
+    // Pause rotation on hover so user can aim
     if (globeRef.current) globeRef.current.controls().autoRotate = !point;
+  };
+
+  const handleClick = (point) => {
+    setSelected(point);
+    setShowHint(false);
+    if (globeRef.current) globeRef.current.controls().autoRotate = false;
   };
 
   return (
     <section className="hero-v2" id="hero">
-      {/* Deep-space background */}
       <div className="hero-v2-bg" />
       <StarField className="hero-v2-stars" />
 
-      {/* ── Grid layout: left text · right globe ── */}
       <div className="hero-v2-layout">
-        {/* Left — text + CTA */}
+        {/* ── Left: text + CTA ── */}
         <div className="hero-v2-text">
           <div className="hero-eyebrow">
             <span className="hero-eyebrow-dot" />
@@ -80,15 +156,19 @@ export default function Hero() {
           </p>
 
           <div className="hero-v2-cta">
-            <a className="btn-primary" href="#explorer">
-              Explore Incidents
-            </a>
+            {/* button + JS scroll = HashRouter-safe */}
+            <button
+              className="btn-primary"
+              onClick={() => scrollToSection("explorer")}
+            >
+              Explore Incidents ↓
+            </button>
             <Link className="btn-secondary" to="/radar">
               Jervis Radar →
             </Link>
           </div>
 
-          {/* Mini type legend */}
+          {/* Incident-type legend */}
           <div className="hero-v2-legend">
             {Object.entries(INCIDENT_TYPES).map(([key, def]) => (
               <div key={key} className="hero-legend-item">
@@ -106,7 +186,7 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Right — 3D globe */}
+        {/* ── Right: 3D globe ── */}
         <div className="hero-v2-globe" ref={containerRef}>
           <Suspense
             fallback={
@@ -127,13 +207,19 @@ export default function Hero() {
               pointsData={INCIDENTS}
               pointLat="latitude"
               pointLng="longitude"
-              pointColor={(d) => getTypeColor(d.type)}
+              pointColor={(d) =>
+                selected?.id === d.id ? "#ffffff" : getTypeColor(d.type)
+              }
               pointRadius={(d) =>
-                d.severity === "critical" ? 0.75 : d.severity === "high" ? 0.55 : 0.4
+                selected?.id === d.id
+                  ? 1.0
+                  : hovered?.id === d.id
+                  ? 0.8
+                  : d.severity === "critical" ? 0.75 : d.severity === "high" ? 0.55 : 0.4
               }
               pointAltitude={0.015}
               pointLabel={() => ""}
-              onPointClick={(p) => setModal(p)}
+              onPointClick={handleClick}
               onPointHover={handleHover}
               ringsData={ringsData}
               ringLat="lat"
@@ -153,31 +239,40 @@ export default function Hero() {
             />
           </Suspense>
 
-          {/* Hover tooltip overlay */}
-          {hovered && (
-            <div className="hero-globe-tooltip">
-              <div
-                className="globe-hover-card-type"
-                style={{ color: getTypeColor(hovered.type) }}
-              >
+          {/* Lightweight hover badge (only when nothing selected) */}
+          {hovered && !selected && (
+            <div
+              className="globe-hover-badge"
+              style={{ borderColor: getTypeColor(hovered.type) + "77" }}
+            >
+              <span style={{ color: getTypeColor(hovered.type) }}>
                 {INCIDENT_TYPES[hovered.type]?.label}
-              </div>
-              <div className="globe-hover-card-title">{hovered.title}</div>
-              <div className="globe-hover-card-meta">
-                {hovered.actor} · {hovered.year} · Click for details
-              </div>
+              </span>
+              {" · "}
+              <strong>{hovered.title}</strong>
+              {" · "}
+              <span style={{ opacity: 0.6 }}>{hovered.actor}, {hovered.year}</span>
             </div>
           )}
 
-          {/* Scroll hint */}
+          {/* Onboarding callout — auto-hides after 6 s or first click */}
+          <OnboardHint visible={showHint && !selected} />
+
+          {/* Persistent micro-instruction */}
+          <div className="globe-micro-instruction">
+            ↑ Click glowing markers to inspect incidents
+          </div>
+
+          {/* Click-result info panel (or empty-state prompt) */}
+          <GlobeInfoPanel incident={selected} onClose={() => setSelected(null)} />
+
+          {/* Scroll cue */}
           <div className="hero-scroll-hint">
             <div className="scroll-hint-line" />
             <span>Scroll to explore</span>
           </div>
         </div>
       </div>
-
-      {modal && <IncidentModal incident={modal} onClose={() => setModal(null)} />}
     </section>
   );
 }

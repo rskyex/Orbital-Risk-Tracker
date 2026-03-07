@@ -1,17 +1,31 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const NAV_LINKS = [
-  { label: "Incidents",    to: "/#explorer",   anchor: "explorer" },
-  { label: "Radar",        to: "/radar",        anchor: null },
-  { label: "Methodology",  to: "/methodology",  anchor: null },
-  { label: "Data Sources", to: "/data-sources", anchor: null },
+  { label: "Incidents",    anchor: "explorer" },
+  { label: "Radar",        to: "/radar" },
+  { label: "Methodology",  anchor: "methodology" },
+  { label: "Data Sources", to: "/data-sources" },
 ];
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const navigate     = useNavigate();
 
-  const scrollTo = (id) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  // Scroll to on-page anchor — if not on home, navigate home first then scroll
+  const scrollTo = (anchor) => {
+    const doScroll = () =>
+      setTimeout(
+        () => document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth" }),
+        80
+      );
+
+    if (pathname === "/") {
+      doScroll();
+    } else {
+      navigate("/");
+      doScroll();
+    }
+  };
 
   return (
     <nav className="navbar">
