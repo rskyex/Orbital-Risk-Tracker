@@ -1,101 +1,75 @@
+import { Link } from "react-router-dom";
+
+const YEAR = new Date().getFullYear();
+
 export default function Footer() {
-  const scrollTo = (id) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-
-  const navItems = [
-    { label: "Globe View",        id: "globe" },
-    { label: "Incident Explorer", id: "explorer" },
-    { label: "Analytics",         id: "analytics" },
-    { label: "Methodology",       id: "methodology" },
+  const PAGES = [
+    { label: "Home",         to: "/" },
+    { label: "Jervis Radar", to: "/radar" },
+    { label: "Methodology",  to: "/methodology" },
+    { label: "Data Sources", to: "/data-sources" },
   ];
-
-  const stack = ["React", "Vite", "react-globe.gl", "Recharts", "Three.js"];
+  const STACK = ["React", "Vite", "react-globe.gl", "Recharts", "Three.js", "react-router-dom"];
+  const REFS = [
+    "Jervis (1978) — Security Dilemma",
+    "Farrell & Newman (2019) — Weaponized Interdependence",
+    "SWF Global Counterspace Capabilities",
+    "CSIS Space Threat Assessment",
+    "C4ADS 'Above Us Only Stars' (2019)",
+    "CISA/NCSC Advisory AA22-110A",
+    "OPSGROUP GPS Spoofing Reports",
+  ];
 
   return (
     <footer className="footer">
       <div className="section-container">
         <div className="footer-grid">
-          {/* Brand */}
           <div>
-            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
-              <span style={{ fontSize:20 }}>🛰</span>
-              <div className="footer-brand-name">Orbital Risk Tracker</div>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+              <span style={{ fontSize:22 }}>🛰</span>
+              <span className="footer-brand-name">Orbital Risk Tracker</span>
             </div>
             <p className="footer-brand-desc">
-              An interactive geospatial intelligence dashboard visualising
-              space security incidents through the Jervis security dilemma
-              framework. Built as a portfolio project demonstrating the
-              intersection of IR theory and data visualisation.
+              Interactive geospatial intelligence platform visualising real-world
+              space security incidents through the Jervis security dilemma framework.
+              Portfolio project demonstrating the intersection of IR scholarship and
+              data visualisation.
             </p>
-            <div style={{ marginTop:16, display:"flex", gap:10 }}>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display:"inline-flex",
-                  alignItems:"center",
-                  gap:6,
-                  fontSize:12,
-                  color:"var(--text-secondary)",
-                  background:"rgba(255,255,255,0.06)",
-                  border:"1px solid var(--border)",
-                  padding:"5px 12px",
-                  borderRadius:6,
-                  textDecoration:"none",
-                  transition:"all 0.15s",
-                }}
-              >
-                ⭐ GitHub Repository
-              </a>
-            </div>
+            <p style={{ marginTop:12, fontSize:12, color:"var(--cyan)", opacity:0.85 }}>
+              © {YEAR} Risa Koyanagi. All original design &amp; code rights reserved.
+            </p>
+            <p style={{ marginTop:4, fontSize:11, color:"var(--text-muted)", lineHeight:1.6 }}>
+              Incident data compiled from public sources — see Data Sources page.
+              Original content belongs to respective authors and organisations.
+            </p>
+            <a href="https://github.com/rskyex/orbital" target="_blank" rel="noopener noreferrer"
+               className="footer-github-link">★ GitHub Repository</a>
           </div>
-
-          {/* Navigation */}
           <div>
-            <p className="footer-col-title">Navigation</p>
+            <p className="footer-col-title">Pages</p>
             <div className="footer-links">
-              {navItems.map(({ label, id }) => (
-                <button
-                  key={id}
-                  className="footer-link"
-                  onClick={() => scrollTo(id)}
-                >
-                  {label}
-                </button>
+              {PAGES.map(({ label, to }) => (
+                <Link key={to} to={to} className="footer-link">{label}</Link>
               ))}
             </div>
           </div>
-
-          {/* Framework */}
           <div>
-            <p className="footer-col-title">Framework Basis</p>
+            <p className="footer-col-title">Key Sources</p>
             <div className="footer-links">
-              {[
-                "Jervis (1978) Security Dilemma",
-                "Farrell & Newman (2019) Weaponized Interdependence",
-                "Salami Tactics Theory",
-                "SWF Space Threat Assessments",
-                "C4ADS 'Above Us Only Stars'",
-              ].map((s) => (
-                <span key={s} className="footer-link" style={{ cursor:"default" }}>
-                  {s}
-                </span>
+              {REFS.map((s) => (
+                <span key={s} className="footer-link" style={{ cursor:"default" }}>{s}</span>
               ))}
             </div>
           </div>
         </div>
-
-        {/* Bottom bar */}
         <div className="footer-bottom">
-          <span>
-            Portfolio project · Space Security &amp; Governance ·{" "}
-            {new Date().getFullYear()}
-          </span>
+          <div>
+            <span style={{ color:"var(--cyan)", fontWeight:700 }}>© {YEAR} Risa Koyanagi</span>
+            <span style={{ margin:"0 10px", opacity:0.3 }}>·</span>
+            <span>Portfolio Project · Space Security &amp; Governance</span>
+          </div>
           <div className="footer-stack">
-            {stack.map((s) => (
-              <span key={s} className="stack-tag">{s}</span>
-            ))}
+            {STACK.map((s) => <span key={s} className="stack-tag">{s}</span>)}
           </div>
         </div>
       </div>

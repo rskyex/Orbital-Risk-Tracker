@@ -1,33 +1,23 @@
+import { HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { useScrollReveal } from "./hooks/useScrollReveal";
-import Navbar           from "./components/Navbar";
-import Hero             from "./components/Hero";
-import MetricsSection   from "./components/MetricsSection";
-import GlobeSection     from "./components/GlobeSection";
-import IncidentExplorer from "./components/IncidentExplorer";
-import AnalyticsSection from "./components/AnalyticsSection";
-import Methodology      from "./components/Methodology";
-import Footer           from "./components/Footer";
+import Navbar              from "./components/Navbar";
+import HomePage            from "./pages/HomePage";
+import RadarPage           from "./pages/RadarPage";
+import MethodologyPage     from "./pages/MethodologyPage";
+import DataSourcesPage     from "./pages/DataSourcesPage";
+import IncidentDetailPage  from "./pages/IncidentDetailPage";
 
 export default function App() {
-  useScrollReveal();
-
   return (
-    <>
+    <HashRouter>
       <Navbar />
-      <main style={{ paddingTop: 60 }}>
-        <Hero />
-        <MetricsSection />
-        <div className="section-divider" />
-        <GlobeSection />
-        <div className="section-divider" />
-        <IncidentExplorer />
-        <div className="section-divider" />
-        <AnalyticsSection />
-        <div className="section-divider" />
-        <Methodology />
-      </main>
-      <Footer />
-    </>
+      <Routes>
+        <Route path="/"               element={<HomePage />} />
+        <Route path="/radar"          element={<RadarPage />} />
+        <Route path="/methodology"    element={<MethodologyPage />} />
+        <Route path="/data-sources"   element={<DataSourcesPage />} />
+        <Route path="/incidents/:id"  element={<IncidentDetailPage />} />
+      </Routes>
+    </HashRouter>
   );
 }

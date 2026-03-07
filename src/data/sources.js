@@ -1,0 +1,182 @@
+// ─── Primary source registry ───────────────────────────────────────────────
+// Sources used in the Orbital Risk Tracker dataset.
+// All are publicly accessible. URLs were valid as of 2024.
+// © Risa Koyanagi — compilation only; original content belongs to respective authors.
+
+export const SOURCES = [
+  // ── Official government / military ────────────────────────────────────────
+  {
+    id: "usspacecom",
+    name: "US Space Command (USSPACECOM)",
+    type: "official",
+    description: "Official US military command responsible for space operations. Issues public statements on space security incidents, including RPO activities and ASAT tests.",
+    url: "https://www.spacecom.mil/",
+    coverage: "US perspective on counterspace activities; RPO warnings; ASAT attributions",
+  },
+  {
+    id: "cisa",
+    name: "CISA — Cybersecurity and Infrastructure Security Agency",
+    type: "official",
+    description: "US government agency that issues joint advisories on major cyber incidents, including the Viasat KA-SAT attack.",
+    url: "https://www.cisa.gov/",
+    coverage: "Cyber incidents affecting critical infrastructure, including space systems",
+  },
+  {
+    id: "nasa-odpo",
+    name: "NASA Orbital Debris Program Office (ODPO)",
+    type: "official",
+    description: "NASA office that tracks and publishes data on orbital debris, including post-ASAT event debris assessments.",
+    url: "https://orbitaldebris.jsc.nasa.gov/",
+    coverage: "Debris event data; ASAT test consequences; LEO environment assessments",
+  },
+  {
+    id: "drdo",
+    name: "Indian Defence Research and Development Organisation (DRDO)",
+    type: "official",
+    description: "India's premier defence R&D agency, which issued the official statement on Mission Shakti.",
+    url: "https://www.drdo.gov.in/",
+    coverage: "India Mission Shakti ASAT test (2019)",
+  },
+  {
+    id: "kcc",
+    name: "Korea Communications Commission (KCC)",
+    type: "official",
+    description: "South Korean regulatory authority that documented and published reports on North Korean GPS jamming campaigns.",
+    url: "https://www.kcc.go.kr/",
+    coverage: "North Korea GPS jamming campaigns 2012, 2016",
+  },
+  {
+    id: "dod",
+    name: "US Department of Defense (DoD)",
+    type: "official",
+    description: "US DoD press briefings and statements on major space security events.",
+    url: "https://www.defense.gov/",
+    coverage: "Operation Burnt Frost (2008); general US counterspace policy",
+  },
+  // ── Think tanks / research ────────────────────────────────────────────────
+  {
+    id: "swf",
+    name: "Secure World Foundation (SWF)",
+    type: "thinktank",
+    description: "Non-partisan foundation focused on space security and sustainability. Publishes annual Global Counterspace Capabilities reports — the most comprehensive open-source assessment of counterspace activities.",
+    url: "https://swfound.org/",
+    coverage: "RPO activities; ASAT capabilities; Chinese and Russian counterspace programs; annual threat assessments",
+  },
+  {
+    id: "csis-aerospace",
+    name: "CSIS Aerospace Security Project",
+    type: "thinktank",
+    description: "Center for Strategic and International Studies program tracking space security. Publishes the annual 'Space Threat Assessment' report.",
+    url: "https://aerospace.csis.org/",
+    coverage: "Annual Space Threat Assessment; Chinese and Russian ASAT programs; space policy analysis",
+  },
+  {
+    id: "c4ads",
+    name: "C4ADS",
+    type: "thinktank",
+    description: "Data-driven non-profit that published the landmark 2019 report 'Above Us Only Stars' documenting Russian GNSS spoofing patterns.",
+    url: "https://c4ads.org/",
+    coverage: "Russian GNSS spoofing (Black Sea, Syria, Norway); 'Above Us Only Stars' (2019)",
+  },
+  {
+    id: "ifri",
+    name: "Institut français des relations internationales (IFRI)",
+    type: "thinktank",
+    description: "French think tank with publications on Chinese space strategy and ASAT policy.",
+    url: "https://www.ifri.org/",
+    coverage: "Chinese ASAT policy; SJ-12 RPO analysis",
+  },
+  // ── Company / operator ────────────────────────────────────────────────────
+  {
+    id: "kaspersky",
+    name: "Kaspersky Lab — Global Research & Analysis Team (GReAT)",
+    type: "company",
+    description: "Cybersecurity firm that documented the Turla APT's satellite C2 hijacking technique.",
+    url: "https://securelist.com/",
+    coverage: "Turla satellite C2 hijacking (2015); Satellite Turla report",
+  },
+  {
+    id: "sentinellabs",
+    name: "SentinelOne / SentinelLabs",
+    type: "company",
+    description: "Cybersecurity firm that performed the technical analysis of AcidRain malware used in the Viasat KA-SAT attack.",
+    url: "https://www.sentinelone.com/labs/",
+    coverage: "AcidRain malware analysis; Viasat KA-SAT cyberattack (2022)",
+  },
+  {
+    id: "spacex",
+    name: "SpaceX",
+    type: "company",
+    description: "Commercial launch and satellite broadband provider whose Starlink network was targeted by Russian jamming in Ukraine.",
+    url: "https://www.spacex.com/",
+    coverage: "Starlink jamming by Russia (2022)",
+  },
+  // ── Aviation safety authorities ───────────────────────────────────────────
+  {
+    id: "easa",
+    name: "European Union Aviation Safety Agency (EASA)",
+    type: "aviation",
+    description: "EU aviation authority that issues Safety Information Bulletins (SIBs) on GNSS interference and GPS spoofing affecting European and global airspace.",
+    url: "https://www.easa.europa.eu/",
+    coverage: "GPS jamming/spoofing SIBs 2019-2024; Nordic and Eastern European interference; Middle East spoofing",
+  },
+  {
+    id: "eurocontrol",
+    name: "EUROCONTROL",
+    type: "aviation",
+    description: "Pan-European air traffic management organisation that publishes GNSS interference notices and tracks frequency of disruption events.",
+    url: "https://www.eurocontrol.int/",
+    coverage: "Ukraine war GNSS disruption; Baltic/Nordic jamming; Eastern European airspace interference",
+  },
+  {
+    id: "opsgroup",
+    name: "OPSGROUP",
+    type: "aviation",
+    description: "International pilot and dispatcher organisation that has become the primary community resource for tracking GPS spoofing events globally, publishing real-time advisories and annual reviews.",
+    url: "https://opsgroup.com/",
+    coverage: "GPS spoofing 2022-2024; Middle East spoofing; Global GPS spoofing escalation 2024",
+  },
+  {
+    id: "traficom",
+    name: "Finnish Transport and Communications Agency (TRAFICOM)",
+    type: "aviation",
+    description: "Finnish national authority that documented Russian GNSS jamming affecting Finnish airspace during NATO exercises.",
+    url: "https://www.traficom.fi/",
+    coverage: "Baltic/Nordic GNSS jamming (2018); Kola Peninsula EW attribution",
+  },
+  // ── Major media ───────────────────────────────────────────────────────────
+  {
+    id: "spacenews",
+    name: "SpaceNews",
+    type: "media",
+    description: "Leading specialist trade publication covering space industry and policy. Used for RPO tracking, ASAT events, and general space security reporting.",
+    url: "https://spacenews.com/",
+    coverage: "General space security; RPO activities; ASAT events; Chinese and Russian space programs",
+  },
+  {
+    id: "aviationweek",
+    name: "Aviation Week & Space Technology",
+    type: "media",
+    description: "Specialist aerospace publication with detailed coverage of military space programs and counterspace activities.",
+    url: "https://aviationweek.com/",
+    coverage: "China laser dazzling (2006); Russian RPO activities; Matryoshka satellite; Cosmos-2558",
+  },
+  {
+    id: "csmonitor",
+    name: "Christian Science Monitor",
+    type: "media",
+    description: "International news publication with early reporting on the Iran RQ-170 GPS spoofing incident.",
+    url: "https://www.csmonitor.com/",
+    coverage: "Iran RQ-170 GPS spoofing capture (2011)",
+  },
+  {
+    id: "gpsworld",
+    name: "GPS World",
+    type: "media",
+    description: "Specialist publication covering GNSS technology and interference, including North Korean jamming and Shanghai spoofing.",
+    url: "https://www.gpsworld.com/",
+    coverage: "North Korea GPS jamming; Shanghai spoofing; GNSS interference patterns",
+  },
+];
+
+export const SOURCE_MAP = Object.fromEntries(SOURCES.map((s) => [s.id, s]));
