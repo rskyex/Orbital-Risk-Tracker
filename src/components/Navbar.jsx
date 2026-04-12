@@ -1,17 +1,18 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const NAV_LINKS = [
-  { label: "Incidents",    anchor: "explorer" },
-  { label: "Radar",        to: "/radar" },
-  { label: "Methodology",  anchor: "methodology" },
-  { label: "Data Sources", to: "/data-sources" },
+  { label: "Data Layers",   anchor: "data-layers" },
+  { label: "Governance",    to: "/governance" },
+  { label: "Actors",        anchor: "actors" },
+  { label: "Incidents",     anchor: "explorer" },
+  { label: "Radar",         to: "/radar" },
+  { label: "About",         to: "/about" },
 ];
 
 export default function Navbar() {
   const { pathname } = useLocation();
   const navigate     = useNavigate();
 
-  // Scroll to on-page anchor — if not on home, navigate home first then scroll
   const scrollTo = (anchor) => {
     const doScroll = () =>
       setTimeout(
@@ -33,7 +34,7 @@ export default function Navbar() {
         <span className="navbar-brand-icon">🛰</span>
         <div>
           <div className="navbar-brand-name">Orbital Risk Tracker</div>
-          <div className="navbar-brand-sub">Space Incident Intelligence</div>
+          <div className="navbar-brand-sub">Faultline Platform</div>
         </div>
       </Link>
 
@@ -58,7 +59,7 @@ export default function Navbar() {
           )
         )}
         <Link className="navbar-cta" to="/radar">
-          Radar →
+          Radar &rarr;
         </Link>
       </div>
     </nav>
