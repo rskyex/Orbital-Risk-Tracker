@@ -7,7 +7,7 @@ const FAULTLINE_MODULES = [
   { label: "Global Nuclear Infrastructure Atlas", url: "https://globalnuclearinfrastructureatlas.vercel.app/" },
   { label: "Orbital Risk Tracker",          url: "https://orbitalrisktracker.vercel.app/" },
   { label: "Cyber Escalation Atlas",        url: "https://cyber-escalation-atlas.vercel.app/" },
-  { label: "Space Mandate Atlas",           url: "https://space-mandate-atlas.vercel.app/" },
+  { label: "Space Mandate Atlas",           url: "https://lunar-mandate-atlas.vercel.app/" },
 ];
 
 export default function Footer() {

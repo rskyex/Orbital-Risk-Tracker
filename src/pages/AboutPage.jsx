@@ -203,7 +203,7 @@ export default function AboutPage() {
               <p>Maps cyber operations across the escalation spectrum using Jervis security
               dilemma theory. Tracks state-attributed cyber incidents and their governance implications.</p>
             </a>
-            <a href="https://space-mandate-atlas.vercel.app/" target="_blank" rel="noopener noreferrer" className="platform-module platform-module--link">
+            <a href="https://lunar-mandate-atlas.vercel.app/" target="_blank" rel="noopener noreferrer" className="platform-module platform-module--link">
               <h4 style={{ color: "var(--cyan)" }}>Space Mandate Atlas</h4>
               <p>Tracks international space governance mandates, treaty architectures, and
               institutional authority across orbital regimes and jurisdictions.</p>
