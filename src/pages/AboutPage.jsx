@@ -144,32 +144,70 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Creator */}
+        <section className="about-section">
+          <h2 className="about-section-title">Creator</h2>
+          <div className="creator-profile glass">
+            <img src="/profile.jpg" alt="Risa Koyanagi" className="creator-avatar" />
+            <div className="creator-details">
+              <h3 className="creator-name">Risa Koyanagi</h3>
+              <p className="creator-affiliation">Cambridge Future Scholar</p>
+              <p className="creator-bio">
+                Researcher working across space, nuclear, and emerging technology governance
+                and strategic risk. Her work focuses on legitimation, dual-use systems, and
+                authority architecture. She also designs public-facing research platforms on
+                AI governance, strategic infrastructure risk, and interpretive systems.
+              </p>
+              <div className="creator-links">
+                <a href="https://risakoyanagi.com" target="_blank" rel="noopener noreferrer" className="creator-link-btn">
+                  risakoyanagi.com
+                </a>
+                <a href="https://faultline-nqmm.vercel.app/" target="_blank" rel="noopener noreferrer" className="creator-link-btn creator-link-btn--alt">
+                  Faultline Platform
+                </a>
+                <a href="https://github.com/rskyex" target="_blank" rel="noopener noreferrer" className="creator-link-btn creator-link-btn--alt">
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Platform Context */}
         <section className="about-section">
           <h2 className="about-section-title">Within the Faultline Platform</h2>
           <p className="about-section-desc">
-            The Orbital Risk Tracker is one module within the Faultline strategic intelligence
-            platform. Faultline provides governance-grade analytical tools for domains where
-            technical risk and institutional capacity are misaligned — where the speed of
-            technological change outpaces the development of governance frameworks.
+            The Orbital Risk Tracker is one module within{" "}
+            <a href="https://faultline-nqmm.vercel.app/" target="_blank" rel="noopener noreferrer"
+               style={{ color: "var(--cyan)", textDecoration: "none" }}>
+              Faultline
+            </a>
+            , a strategic intelligence platform providing governance-grade analytical tools for
+            domains where technical risk and institutional capacity are misaligned — where the
+            speed of technological change outpaces the development of governance frameworks.
           </p>
           <div className="platform-modules glass">
-            <div className="platform-module">
-              <h4 style={{ color: "var(--cyan)" }}>Cyber Escalation Atlas</h4>
-              <p>Maps cyber operations across the escalation spectrum using Jervis security
-              dilemma theory. Tracks state-attributed cyber incidents and their governance implications.</p>
-            </div>
+            <a href="https://globalnuclearinfrastructureatlas.vercel.app/" target="_blank" rel="noopener noreferrer" className="platform-module platform-module--link">
+              <h4 style={{ color: "var(--cyan)" }}>Global Nuclear Infrastructure Atlas</h4>
+              <p>Maps critical nuclear infrastructure, governance gaps, and proliferation risk
+              vectors across global supply chains and regulatory regimes.</p>
+            </a>
             <div className="platform-module platform-module--active">
               <h4 style={{ color: "var(--cyan)" }}>Orbital Risk Tracker</h4>
               <p>This tool. Maps orbital risk across debris density, conjunction events,
               spectrum congestion, and jurisdiction fragmentation. Integrates technical and
               legal-institutional risk in a single analytical frame.</p>
             </div>
-            <div className="platform-module">
-              <h4 style={{ color: "var(--cyan)" }}>Subsea Cable Monitor</h4>
-              <p>Tracks physical infrastructure vulnerability in undersea cable networks.
-              Assesses jurisdiction, repair capacity, and chokepoint risk.</p>
-            </div>
+            <a href="https://cyber-escalation-atlas.vercel.app/" target="_blank" rel="noopener noreferrer" className="platform-module platform-module--link">
+              <h4 style={{ color: "var(--cyan)" }}>Cyber Escalation Atlas</h4>
+              <p>Maps cyber operations across the escalation spectrum using Jervis security
+              dilemma theory. Tracks state-attributed cyber incidents and their governance implications.</p>
+            </a>
+            <a href="https://space-mandate-atlas.vercel.app/" target="_blank" rel="noopener noreferrer" className="platform-module platform-module--link">
+              <h4 style={{ color: "var(--cyan)" }}>Space Mandate Atlas</h4>
+              <p>Tracks international space governance mandates, treaty architectures, and
+              institutional authority across orbital regimes and jurisdictions.</p>
+            </a>
           </div>
           <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 16, lineHeight: 1.7 }}>
             All Faultline tools share a common analytical methodology: they assess the gap
