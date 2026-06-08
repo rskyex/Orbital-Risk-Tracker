@@ -852,6 +852,115 @@
   line-height: 1.65;
 }
 
+/* ─── Interpretive authority block ───────────────────────────────────── */
+.modal-interpretation {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.framings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.framing-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.framing-card--prevailing {
+  border-color: rgba(59,130,246,0.55);
+  background: rgba(59,130,246,0.08);
+}
+
+.framing-actor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.framing-prevailing-tag {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  background: rgba(59,130,246,0.18);
+  border: 1px solid rgba(59,130,246,0.4);
+  border-radius: 10px;
+  padding: 1px 7px;
+}
+
+.framing-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.framing-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.framing-source a { color: var(--cyan); text-decoration: none; }
+.framing-source a:hover { text-decoration: underline; }
+
+.term-chip {
+  font-style: italic;
+}
+
+/* ─── Authority distribution sidebar ─────────────────────────────────── */
+.authority-dist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.authority-dist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.authority-dist-row--muted { opacity: 0.85; }
+
+.authority-dist-actor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.authority-dist-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.authority-dist-count {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .modal-jervis-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

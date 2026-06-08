@@ -6,7 +6,10 @@ import {
   SEVERITY_LEVELS,
   DIFFERENTIATION_LEVELS,
   DIFFERENTIATION_UNCODED,
+  INTERPRETATION_STATUS,
+  INTERPRETATION_UNCODED,
   isDifferentiationCoded,
+  isInterpretationCoded,
 } from "../data/incidents";
 
 const JERVIS_AXES = [
@@ -49,6 +52,12 @@ export default function IncidentModal({ incident, onClose }) {
   const diffMeta  = diffCoded
     ? DIFFERENTIATION_LEVELS[diff.distinguishability]
     : DIFFERENTIATION_UNCODED;
+
+  const interpCoded = isInterpretationCoded(incident);
+  const interp      = interpCoded ? incident.interpretation : null;
+  const interpMeta  = interpCoded
+    ? INTERPRETATION_STATUS[interp.status]
+    : INTERPRETATION_UNCODED;
 
   const riskIndex = (
     ((5 - incident.legibility) + incident.reversibility + incident.escalation) / 3
@@ -213,6 +222,103 @@ export default function IncidentModal({ incident, onClose }) {
               </span>
               Not yet assessed for offense–defense differentiation. Lower
               distinguishability would indicate higher security dilemma intensity.
+            </p>
+          )}
+        </div>
+
+        {/* Interpretive authority — competing framings */}
+        <div className="modal-interpretation">
+          <p className="modal-section-title">Interpretive Authority</p>
+          {interpCoded ? (
+            <>
+              <div className="diff-headline">
+                <span
+                  className="diff-badge"
+                  style={{
+                    color: interpMeta.color,
+                    background: interpMeta.color + "1f",
+                    borderColor: interpMeta.color + "55",
+                  }}
+                >
+                  {interpMeta.label}
+                </span>
+                <span className="diff-intensity">{interpMeta.desc}</span>
+              </div>
+
+              <div className="diff-field">
+                <span className="diff-field-label">Competing framings</span>
+                <div className="framings-grid">
+                  {interp.framings.map((f, i) => {
+                    const isPrevailing =
+                      interp.authorityHolder != null && f.actor === interp.authorityHolder;
+                    return (
+                      <div
+                        key={i}
+                        className={`framing-card ${isPrevailing ? "framing-card--prevailing" : ""}`}
+                      >
+                        <div className="framing-actor">
+                          {f.actor}
+                          {isPrevailing && <span className="framing-prevailing-tag">prevailed</span>}
+                        </div>
+                        <div className="framing-label">“{f.label}”</div>
+                        {f.source && (
+                          <div className="framing-source">
+                            {f.source.url ? (
+                              <a href={f.source.url} target="_blank" rel="noreferrer">
+                                {f.source.label}
+                              </a>
+                            ) : (
+                              <span>{f.source.label}</span>
+                            )}
+                            {f.source.date && <span className="diff-source-date"> · {f.source.date}</span>}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="diff-field">
+                <span className="diff-field-label">Prevailing outcome</span>
+                <p className="diff-field-value">
+                  {interp.authorityHolder != null ? (
+                    <>
+                      Interpretive authority allocated to{" "}
+                      <strong>{interp.authorityHolder}</strong>.
+                    </>
+                  ) : (
+                    <>No framing prevailed — authority remains <strong>{interp.prevailing}</strong>.</>
+                  )}
+                </p>
+              </div>
+
+              {interp.invokedTerms?.length > 0 && (
+                <div className="diff-field">
+                  <span className="diff-field-label">Undefined governance terms invoked</span>
+                  <div className="modal-tags" style={{ marginTop: 4 }}>
+                    {interp.invokedTerms.map((t) => (
+                      <span key={t} className="tag-chip term-chip">“{t}”</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="diff-field">
+                <span className="diff-field-label">Confidence</span>
+                <p className="diff-field-value diff-field-value--inline">{interp.confidence}</p>
+              </div>
+            </>
+          ) : (
+            <p className="diff-uncoded">
+              <span
+                className="diff-badge diff-badge--uncoded"
+                style={{ color: interpMeta.color, borderColor: interpMeta.color + "88" }}
+              >
+                {interpMeta.label}
+              </span>
+              Not yet assessed for interpretive authority — which actor's framing
+              of this incident prevailed has not been coded.
             </p>
           )}
         </div>

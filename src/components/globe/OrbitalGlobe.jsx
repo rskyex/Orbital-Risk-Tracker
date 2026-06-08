@@ -3,6 +3,8 @@ import {
   INCIDENT_TYPES,
   getTypeColor,
   getDistinguishabilityColor,
+  getInterpretationStatusColor,
+  getAuthorityHolderColor,
 } from "../../data/incidents";
 
 // Lazy-load so Vite can code-split the heavy Three.js bundle
@@ -11,15 +13,27 @@ const Globe = lazy(() => import("react-globe.gl"));
 const NIGHT_TEXTURE   = "//unpkg.com/three-globe/example/img/earth-night.jpg";
 const WATER_TEXTURE   = "//unpkg.com/three-globe/example/img/earth-water.png";
 
-export default function OrbitalGlobe({ incidents, onIncidentClick, colorBy = "type" }) {
+export default function OrbitalGlobe({
+  incidents,
+  onIncidentClick,
+  colorBy = "type",
+  authorityColorMap = {},
+}) {
   const globeRef = useRef(null);
   const [hovered, setHovered] = useState(null);
   const [ready, setReady]   = useState(false);
 
-  // Point/ring colour resolves either by incident type (default layer) or by
-  // offense–defense distinguishability (Differentiation layer).
-  const colorFor = (d) =>
-    colorBy === "differentiation" ? getDistinguishabilityColor(d) : getTypeColor(d.type);
+  // Point/ring colour resolves by the active layer: incident type (default),
+  // offense–defense distinguishability, interpretation status, or the actor
+  // holding interpretive authority.
+  const colorFor = (d) => {
+    switch (colorBy) {
+      case "differentiation":          return getDistinguishabilityColor(d);
+      case "interpretation-status":    return getInterpretationStatusColor(d);
+      case "interpretation-authority": return getAuthorityHolderColor(d, authorityColorMap);
+      default:                         return getTypeColor(d.type);
+    }
+  };
 
   // Auto-rotate
   useEffect(() => {

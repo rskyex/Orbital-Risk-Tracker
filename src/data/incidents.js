@@ -81,6 +81,64 @@ export const DIFFERENTIATION_UNCODED = {
   intensity: "Not yet assessed for offense–defense differentiation",
 };
 
+// ─── Interpretive authority variable ────────────────────────────────────────
+// Makes visible WHO holds interpretive authority over each incident. When an
+// incident occurs, competing actors characterise what it "was" — a test, an
+// accident, irresponsible behaviour, a hostile act, a routine operation.
+// Whichever characterisation prevails has effectively allocated interpretive
+// authority to that actor, frequently by invoking UNDEFINED governance terms
+// ("due regard", "harmful interference", "peaceful purposes", "national
+// appropriation") rather than settled definitions.
+//
+// CODING NOTES:
+//   framing      — an actor's public or official characterisation of what the
+//                  incident was.
+//   prevailing   — the characterisation that dominated subsequent official,
+//                  legal, or widely reported discourse (or "contested" /
+//                  "unresolved").
+//   The analytical claim to surface: where one framing prevails WITHOUT a
+//   settled underlying definition, interpretive authority has effectively been
+//   allocated to that actor.
+//
+// A null / absent `interpretation` field means the incident is UNCODED and
+// must render in a distinct "uncoded" state, never as a real coding.
+//
+// @typedef {{ label: string, url?: string, date?: string }} InterpretationSource
+// @typedef {{ actor: string, label: string, source?: InterpretationSource }} Framing
+// @typedef {"settled"|"contested"|"unresolved"} InterpretationStatus
+// @typedef {{
+//   framings: Framing[],
+//   prevailing: string,          // actor whose framing dominated, or "contested" / "unresolved"
+//   authorityHolder: string|null, // actor whose framing prevailed; null if contested/unresolved
+//   invokedTerms: string[],      // undefined governance terms invoked
+//   status: InterpretationStatus,
+//   confidence: DifferentiationConfidence
+// }} Interpretation
+//
+// Status encoding (visually distinct from the differentiation ramp): settled =
+// cool blue, contested = amber, unresolved = violet.
+export const INTERPRETATION_STATUS = {
+  settled:    { label: "Settled",    color: "#3b82f6", desc: "One framing dominated subsequent discourse" },
+  contested:  { label: "Contested",  color: "#f59e0b", desc: "Rival framings remain actively disputed" },
+  unresolved: { label: "Unresolved", color: "#a855f7", desc: "No framing has prevailed" },
+};
+
+// Distinct visual state for incidents with no interpretation coding at all.
+export const INTERPRETATION_UNCODED = {
+  label: "Uncoded",
+  color: "#475569",
+  desc: "Not yet assessed for interpretive authority",
+};
+
+// Categorical palette for the "colour by authority holder" secondary view.
+// Assigned deterministically over the distinct authorityHolders in the data so
+// clustering of framing power by actor becomes visible.
+const AUTHORITY_PALETTE = [
+  "#38bdf8", "#f472b6", "#34d399", "#fbbf24", "#a78bfa",
+  "#fb7185", "#22d3ee", "#a3e635", "#f97316", "#c084fc",
+];
+const CONTESTED_COLOR = "#64748b"; // contested / unresolved share a neutral grey
+
 // ─── Curated dataset — publicly verifiable space security incidents ─────────
 // Scoring basis: Jervis (1978). All scores 1–5, researcher judgement.
 // See /methodology for full rubric and data limitations.
@@ -927,6 +985,83 @@ export const INCIDENTS = [
       ],
     },
   },
+  {
+    id: 903,
+    title: "ILLUSTRATIVE — Disputed Close Approach Framed as 'Due Regard' Failure",
+    date: "2025-04-10",
+    year: 2025,
+    actor: "ILLUSTRATIVE (fictional state A)",
+    target: "Foreign LEO reconnaissance satellite",
+    type: "proximity",
+    subtype: "Uncommanded-looking close approach",
+    orbit: "LEO",
+    domain: "Space",
+    latitude: 12.0,
+    longitude: -45.0,
+    summary:
+      "ILLUSTRATIVE / FICTIONAL sample. State A's satellite makes a close approach to State B's reconnaissance asset. State A calls it a routine, pre-notified station-keeping manoeuvre; State B calls it a deliberate failure to exercise 'due regard' and an act of harassment. State B's characterisation dominates subsequent reporting and a closed-door consultation, so interpretive authority effectively settles with State B — even though 'due regard' is never defined.",
+    severity: "medium",
+    confidence: "medium",
+    legibility: 3,
+    reversibility: 4,
+    escalation: 3,
+    salamiTactic: true,
+    tags: ["ILLUSTRATIVE", "Due Regard", "Contested Framing", "Interpretive Authority"],
+    source: "Illustrative sample — not a real incident",
+    sourceTitle: "Illustrative sample",
+    sourceType: "thinktank",
+    sourceUrl: undefined,
+    interpretation: {
+      framings: [
+        { actor: "ILLUSTRATIVE (fictional state A)", label: "Routine pre-notified station-keeping manoeuvre" },
+        { actor: "ILLUSTRATIVE (fictional state B)", label: "Deliberate failure of 'due regard' and harassment" },
+      ],
+      prevailing: "ILLUSTRATIVE (fictional state B)",
+      authorityHolder: "ILLUSTRATIVE (fictional state B)",
+      invokedTerms: ["due regard", "harmful interference"],
+      status: "settled",
+      confidence: "assessed",
+    },
+  },
+  {
+    id: 904,
+    title: "ILLUSTRATIVE — Contested Signal Outage, No Prevailing Framing",
+    date: "2025-05-22",
+    year: 2025,
+    actor: "ILLUSTRATIVE (multiple fictional states)",
+    target: "Shared navigation service over contested region",
+    type: "jamming",
+    subtype: "Attributed-then-denied interference",
+    orbit: "N/A",
+    domain: "Cyber-EM",
+    latitude: 33.0,
+    longitude: 44.0,
+    summary:
+      "ILLUSTRATIVE / FICTIONAL sample. A regional navigation outage is variously framed as hostile jamming, an accidental spillover from a military exercise, and ordinary spectrum congestion. Each actor invokes 'harmful interference' to mean something different, no characterisation prevails, and no body adjudicates — interpretive authority is left unallocated.",
+    severity: "medium",
+    confidence: "contested",
+    legibility: 2,
+    reversibility: 5,
+    escalation: 2,
+    salamiTactic: true,
+    tags: ["ILLUSTRATIVE", "Harmful Interference", "Unresolved", "Interpretive Authority"],
+    source: "Illustrative sample — not a real incident",
+    sourceTitle: "Illustrative sample",
+    sourceType: "thinktank",
+    sourceUrl: undefined,
+    interpretation: {
+      framings: [
+        { actor: "ILLUSTRATIVE (fictional state C)", label: "Hostile jamming attributable to a rival" },
+        { actor: "ILLUSTRATIVE (fictional state D)", label: "Accidental spillover from a military exercise" },
+        { actor: "ILLUSTRATIVE (regional operator)", label: "Ordinary spectrum congestion, no hostile intent" },
+      ],
+      prevailing: "unresolved",
+      authorityHolder: null,
+      invokedTerms: ["harmful interference", "peaceful purposes"],
+      status: "unresolved",
+      confidence: "inferred",
+    },
+  },
 ];
 
 // ─── Derived helpers ────────────────────────────────────────────────────────
@@ -949,6 +1084,63 @@ export const getDistinguishabilityColor = (inc) =>
   isDifferentiationCoded(inc)
     ? DIFFERENTIATION_LEVELS[inc.differentiation.distinguishability].color
     : DIFFERENTIATION_UNCODED.color;
+
+// Interpretation helpers. An incident is "coded" only when it carries a
+// non-null `interpretation` object with a recognised status.
+export const isInterpretationCoded = (inc) =>
+  inc?.interpretation != null &&
+  inc.interpretation.status in INTERPRETATION_STATUS;
+
+export const getInterpretationStatus = (inc) =>
+  isInterpretationCoded(inc) ? inc.interpretation.status : null;
+
+export const getInterpretationStatusColor = (inc) =>
+  isInterpretationCoded(inc)
+    ? INTERPRETATION_STATUS[inc.interpretation.status].color
+    : INTERPRETATION_UNCODED.color;
+
+// Build a deterministic { authorityHolder -> color } map across coded
+// incidents, for the "colour by authority holder" secondary view. Incidents
+// with no single authority holder (contested / unresolved) map to a neutral
+// grey; uncoded incidents fall back to the uncoded colour at call sites.
+export const getAuthorityHolderColorMap = (incidents) => {
+  const holders = [
+    ...new Set(
+      incidents
+        .filter(isInterpretationCoded)
+        .map((inc) => inc.interpretation.authorityHolder)
+        .filter((h) => h != null)
+    ),
+  ].sort();
+  const map = {};
+  holders.forEach((h, i) => {
+    map[h] = AUTHORITY_PALETTE[i % AUTHORITY_PALETTE.length];
+  });
+  return map;
+};
+
+export const getAuthorityHolderColor = (inc, colorMap) => {
+  if (!isInterpretationCoded(inc)) return INTERPRETATION_UNCODED.color;
+  const holder = inc.interpretation.authorityHolder;
+  return holder != null ? colorMap[holder] ?? CONTESTED_COLOR : CONTESTED_COLOR;
+};
+
+// Aggregate distribution of interpretive authority across a set of incidents:
+// count of incidents each actor holds authority over, plus a combined count of
+// contested/unresolved (no single authority holder).
+export const getAuthorityDistribution = (incidents) => {
+  const byHolder = {};
+  let contestedOrUnresolved = 0;
+  incidents.filter(isInterpretationCoded).forEach((inc) => {
+    const holder = inc.interpretation.authorityHolder;
+    if (holder == null) contestedOrUnresolved += 1;
+    else byHolder[holder] = (byHolder[holder] ?? 0) + 1;
+  });
+  const holders = Object.entries(byHolder)
+    .map(([actor, count]) => ({ actor, count }))
+    .sort((a, b) => b.count - a.count || a.actor.localeCompare(b.actor));
+  return { holders, contestedOrUnresolved };
+};
 
 export const ACTORS     = [...new Set(INCIDENTS.map((i) => i.actor))].sort();
 export const YEARS      = [...new Set(INCIDENTS.map((i) => i.year))].sort();
