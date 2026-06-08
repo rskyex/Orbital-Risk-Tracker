@@ -397,6 +397,52 @@
   box-shadow: 0 0 6px currentColor;
 }
 
+/* Uncoded incidents: hollow dashed dot, never reads as a real score */
+.globe-legend-dot--uncoded {
+  background: transparent;
+  border: 1.5px dashed currentColor;
+  box-shadow: none;
+}
+
+/* ─── Globe layer control ─────────────────────────────────────────────── */
+.globe-layer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.globe-layer-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* Honour the per-pill accent colour inside the layer control + low filter */
+.globe-layer-controls .filter-pill--active[style*="--pill-color"] {
+  background: color-mix(in srgb, var(--pill-color) 14%, transparent);
+  border-color: color-mix(in srgb, var(--pill-color) 55%, transparent);
+  color: var(--pill-color);
+}
+
+.globe-legend--differentiation {
+  flex-direction: row;
+}
+
+.globe-legend-note {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.globe-legend-note strong { color: var(--text-secondary); }
+
 .globe-side {
   display: flex;
   flex-direction: column;
@@ -728,6 +774,191 @@
   border-radius: var(--radius);
   padding: 16px;
   margin-bottom: 24px;
+}
+
+/* ─── Offense–defense differentiation block ──────────────────────────── */
+.modal-differentiation {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.diff-headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.diff-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.diff-badge--uncoded {
+  background: transparent;
+  border-style: dashed;
+  margin-right: 8px;
+}
+
+.diff-intensity {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.diff-field { margin-bottom: 12px; }
+
+.diff-field-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.diff-field-value {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.diff-field-value--inline { text-transform: capitalize; }
+
+.diff-sources {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.diff-sources li { font-size: 12px; color: var(--text-secondary); }
+.diff-sources a { color: var(--cyan); text-decoration: none; }
+.diff-sources a:hover { text-decoration: underline; }
+.diff-source-date { color: var(--text-muted); }
+
+.diff-uncoded {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ─── Interpretive authority block ───────────────────────────────────── */
+.modal-interpretation {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.framings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.framing-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.framing-card--prevailing {
+  border-color: rgba(59,130,246,0.55);
+  background: rgba(59,130,246,0.08);
+}
+
+.framing-actor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.framing-prevailing-tag {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  background: rgba(59,130,246,0.18);
+  border: 1px solid rgba(59,130,246,0.4);
+  border-radius: 10px;
+  padding: 1px 7px;
+}
+
+.framing-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.framing-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.framing-source a { color: var(--cyan); text-decoration: none; }
+.framing-source a:hover { text-decoration: underline; }
+
+.term-chip {
+  font-style: italic;
+}
+
+/* ─── Authority distribution sidebar ─────────────────────────────────── */
+.authority-dist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.authority-dist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.authority-dist-row--muted { opacity: 0.85; }
+
+.authority-dist-actor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.authority-dist-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.authority-dist-count {
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .modal-jervis-grid {
