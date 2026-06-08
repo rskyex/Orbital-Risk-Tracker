@@ -10,19 +10,30 @@ Orbital Risk Tracker applies the **Jervis Security Dilemma Framework** (1978) to
 - **Reversibility** — Can the effects be undone?
 - **Escalation Potential** — How likely is a military response?
 
-The platform maps 30+ documented incidents (2006–2024) including ASAT tests, jamming, proximity operations, cyber attacks, GPS spoofing, and laser dazzling.
+The platform maps 30+ documented incidents (2006–2024) including ASAT tests, jamming, proximity operations, cyber attacks, GPS spoofing, and laser dazzling. Beyond incident tracking, it provides a governance-first analytical layer covering legal frameworks, jurisdiction fragmentation, and structural governance gaps in the space domain.
 
 ## Features
 
-- **3D Orbital Globe** — Interactive globe visualization of space security incidents using react-globe.gl
+### Incident Analysis
+- **3D Orbital Globe** — Interactive globe visualization of space security incidents
 - **Jervis Radar Analysis** — Multi-axis radar charts scoring incidents on the security dilemma framework
+- **Searchable Incident Database** — 30+ incidents filterable by type, actor, and severity with full intelligence records
+
+### Orbital Environment
 - **Debris Density Tracking** — Object counts across 5 orbital regimes (LEO, MEO, GEO, HEO, SSO)
 - **Conjunction Log** — Near-miss events with collision probability, miss distance, and relative velocity
 - **Spectrum Congestion** — ITU GEO slot filings and frequency coordination analysis
-- **Governance Risk Scoring** — Composite index (0–100) measuring attribution difficulty, norm adherence, deorbit compliance, and escalation coupling
+
+### Governance & Legal Framework
+- **Governance Risk Scoring** — Composite index (0–100) per orbital regime with 4 sub-indices: attribution difficulty, norm adherence, deorbit compliance, and escalation coupling
+- **Treaty Compliance Matrix** — Coverage of OST, Liability Convention, Registration Convention, COPUOS LTS Guidelines, Artemis Accords, and ITU regulations across 9 major actors
+- **Jurisdiction Fragmentation** — Constellation-level tracking of licensing state, operator nationality, and treaty applicability (Starlink, OneWeb, Kuiper, Guowang, and others)
+- **Structural Governance Gaps** — Identified voids including LEO congestion deficit, SSO reconnaissance cohabitation, GEO proximity operations, megaconstellation regulatory arbitrage, and collision liability gaps
+- **Reform Pathways Monitor** — Active and proposed governance reform tracking
+
+### Intelligence & Actors
+- **Narrative Intelligence Panel** — Contextual analyst notes linking spatial risk events to governance implications
 - **Space Actor Profiles** — Treaty ratification matrices and norm posture for major spacefaring nations and commercial entities
-- **Searchable Incident Database** — Filterable by type, actor, and severity with full intelligence records
-- **Legal Framework Visualization** — Treaty compliance matrices covering OST, Liability Convention, Registration Convention, COPUOS LTS Guidelines, Artemis Accords, and ITU regulations
 
 ## Tech Stack
 
@@ -30,7 +41,7 @@ The platform maps 30+ documented incidents (2006–2024) including ASAT tests, j
 |---|---|
 | Framework | React 19 |
 | Build Tool | Vite 7 |
-| Routing | React Router DOM 7 |
+| Routing | React Router DOM 7 (HashRouter) |
 | 3D Globe | react-globe.gl |
 | Maps | Leaflet + React-Leaflet |
 | Charts | Recharts |
@@ -79,25 +90,48 @@ npm run deploy
 
 ```
 src/
-├── pages/                  # Route-level page components
-│   ├── HomePage.jsx        # Main dashboard
-│   ├── RadarPage.jsx       # Jervis security dilemma radar
-│   ├── GovernancePage.jsx  # Governance architecture
-│   ├── MethodologyPage.jsx # Scoring rubric & methodology
-│   ├── DataSourcesPage.jsx # Data source documentation
-│   ├── AboutPage.jsx       # Platform overview
-│   └── IncidentDetailPage.jsx
-├── components/             # Reusable UI components
-│   ├── globe/              # 3D orbital globe
-│   ├── charts/             # Recharts visualizations
-│   ├── IncidentExplorer.jsx
-│   ├── DebrisDensityPanel.jsx
-│   ├── ConjunctionLog.jsx
-│   ├── GovernanceRiskPanel.jsx
-│   ├── ActorProfiles.jsx
-│   └── ...
-├── data/                   # Incident, governance & reference datasets
-├── hooks/                  # Custom React hooks
+├── pages/                         # Route-level page components
+│   ├── HomePage.jsx               # Multi-section dashboard
+│   ├── RadarPage.jsx              # Jervis security dilemma radar
+│   ├── GovernancePage.jsx         # Governance architecture & treaties
+│   ├── MethodologyPage.jsx        # Scoring rubric & methodology
+│   ├── DataSourcesPage.jsx        # Data source documentation
+│   ├── AboutPage.jsx              # Platform overview
+│   └── IncidentDetailPage.jsx     # Individual incident detail
+│
+├── components/                    # 25+ reusable UI components
+│   ├── globe/
+│   │   └── OrbitalGlobe.jsx      # 3D globe (react-globe.gl)
+│   ├── charts/
+│   │   ├── JervisRadar.jsx       # Security dilemma radar chart
+│   │   ├── TimelineChart.jsx     # Temporal incident data
+│   │   └── ComparisonBar.jsx     # Comparative analysis
+│   ├── IncidentExplorer.jsx      # Searchable incident database
+│   ├── IncidentMap.jsx           # Leaflet map visualization
+│   ├── DebrisDensityPanel.jsx    # Debris tracking by regime
+│   ├── ConjunctionLog.jsx        # Conjunction event log
+│   ├── SpectrumCongestionPanel.jsx
+│   ├── GovernanceRiskPanel.jsx   # Governance risk scoring
+│   ├── GovernanceArchitecture.jsx # Treaty & framework visualization
+│   ├── NarrativeIntelPanel.jsx   # Contextual narrative analysis
+│   ├── ActorProfiles.jsx         # Space actor profiles & compliance
+│   ├── Navbar.jsx, Hero.jsx, Footer.jsx
+│   └── StarField.jsx             # Background animation
+│
+├── data/                          # Structured datasets
+│   ├── incidents.js               # 30+ space security incidents
+│   ├── actors.js                  # Space actor profiles
+│   ├── governance.js              # Governance risk scores by regime
+│   ├── conjunctions.js            # Conjunction events (CDM format)
+│   ├── debrisDensity.js           # Debris counts by orbital regime
+│   ├── spectrumCongestion.js      # ITU spectrum & frequency data
+│   ├── legalFramework.js          # Treaty compliance & structural gaps
+│   ├── jurisdiction.js            # Constellation jurisdiction tracking
+│   └── sources.js                 # Data source references
+│
+├── hooks/
+│   └── useScrollReveal.js         # Scroll animation hook
+│
 └── assets/
 ```
 
