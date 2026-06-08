@@ -30,6 +30,57 @@ export const SOURCE_TYPES = {
   aviation:  "Aviation Safety Authority",
 };
 
+// ─── Jervis "differentiation" variable ──────────────────────────────────────
+// Operationalises the offense–defense DIFFERENTIATION variable from the
+// security dilemma framework (Jervis 1978): for a given incident, how
+// distinguishable is offensive intent from defensive or benign intent based on
+// observable characteristics. LOW distinguishability = HIGH security dilemma
+// intensity, because an observing state cannot tell a threat from a benign act
+// and is pushed to assume the worst.
+//
+// CODING RUBRIC (distinguishability):
+//   high          — purpose is unambiguous from observable characteristics
+//                   (e.g. a destructive direct-ascent ASAT test producing
+//                   trackable debris reads unambiguously as a weapon demo).
+//   moderate      — purpose is mostly inferable, but a plausible benign
+//                   reading exists.
+//   low           — identical observable behaviour is consistent with both
+//                   attack-enabling and benign missions (e.g. close co-orbital
+//                   rendezvous and proximity ops near another state's asset,
+//                   where the same hardware serves inspection, servicing, or
+//                   attack).
+//   indeterminate — insufficient data to score.
+//
+// A null / absent `differentiation` field means the incident is UNCODED and
+// must render in a distinct "uncoded" state, never as a real score.
+//
+// @typedef {"high"|"moderate"|"low"|"indeterminate"} Distinguishability
+// @typedef {"confirmed"|"assessed"|"inferred"} DifferentiationConfidence
+// @typedef {{ label: string, url?: string, date?: string }} DifferentiationSource
+// @typedef {{
+//   distinguishability: Distinguishability,
+//   dualUseBasis: string,   // hardware/behaviour that creates the ambiguity
+//   rationale: string,      // why this score
+//   confidence: DifferentiationConfidence,
+//   sources: DifferentiationSource[]
+// }} Differentiation
+//
+// Sequential ramp: LOW distinguishability is the hot / high-alert end (high
+// security dilemma intensity); HIGH is the cool end; indeterminate is neutral.
+export const DIFFERENTIATION_LEVELS = {
+  low:           { label: "Low",           color: "#ef4444", intensity: "High security dilemma intensity" },
+  moderate:      { label: "Moderate",      color: "#fb923c", intensity: "Elevated security dilemma intensity" },
+  high:          { label: "High",          color: "#38bdf8", intensity: "Low security dilemma intensity" },
+  indeterminate: { label: "Indeterminate", color: "#94a3b8", intensity: "Unscorable — insufficient data" },
+};
+
+// Distinct visual state for incidents with no differentiation coding at all.
+export const DIFFERENTIATION_UNCODED = {
+  label: "Uncoded",
+  color: "#475569",
+  intensity: "Not yet assessed for offense–defense differentiation",
+};
+
 // ─── Curated dataset — publicly verifiable space security incidents ─────────
 // Scoring basis: Jervis (1978). All scores 1–5, researcher judgement.
 // See /methodology for full rubric and data limitations.
@@ -792,6 +843,90 @@ export const INCIDENTS = [
     sourceType: "aviation",
     sourceUrl: "https://opsgroup.com/",
   },
+
+  // ─── ILLUSTRATIVE sample incidents (FICTIONAL) ────────────────────────────
+  // These two entries are NOT real events. They exist only so the
+  // Differentiation layer renders with concrete coded scores. Real incidents
+  // above are deliberately left uncoded (no `differentiation` field). Do not
+  // cite these as evidence of anything.
+  {
+    id: 901,
+    title: "ILLUSTRATIVE — Co-orbital Inspector Shadows Foreign GEO Comsat",
+    date: "2025-03-15",
+    year: 2025,
+    actor: "ILLUSTRATIVE (fictional state)",
+    target: "Foreign GEO communications satellite",
+    type: "proximity",
+    subtype: "Close co-orbital rendezvous & proximity operations",
+    orbit: "GEO",
+    domain: "Space",
+    latitude: 0,
+    longitude: -30.0,
+    summary:
+      "ILLUSTRATIVE / FICTIONAL sample. A maneuverable inspector satellite holds a sustained close co-orbital station near another state's GEO communications satellite. The same robotic-arm and proximity-sensing hardware is equally consistent with on-orbit inspection, life-extension servicing, or attack positioning — the offensive intent cannot be distinguished from benign intent on observable behaviour alone.",
+    severity: "high",
+    confidence: "medium",
+    legibility: 2,
+    reversibility: 4,
+    escalation: 4,
+    salamiTactic: true,
+    tags: ["ILLUSTRATIVE", "Co-orbital RPO", "Dual-Use Hardware", "Low Distinguishability"],
+    source: "Illustrative sample — not a real incident",
+    sourceTitle: "Illustrative sample",
+    sourceType: "thinktank",
+    sourceUrl: undefined,
+    differentiation: {
+      distinguishability: "low",
+      dualUseBasis:
+        "Rendezvous & proximity operations (RPO) hardware — maneuvering thrusters, robotic arm, close-approach sensors — is identical whether the mission is inspection, servicing, or attack positioning.",
+      rationale:
+        "Identical observable behaviour (sustained close co-orbital station-keeping near a foreign asset) is consistent with both attack-enabling and benign missions, so an observer cannot infer intent from what is visible. Low distinguishability indicates high security dilemma intensity.",
+      confidence: "assessed",
+      sources: [
+        { label: "Illustrative sample — not a real incident" },
+        { label: "Jervis, R. (1978) 'Cooperation Under the Security Dilemma', World Politics 30(2)" },
+      ],
+    },
+  },
+  {
+    id: 902,
+    title: "ILLUSTRATIVE — Destructive Direct-Ascent ASAT Test",
+    date: "2025-06-01",
+    year: 2025,
+    actor: "ILLUSTRATIVE (fictional state)",
+    target: "Own defunct satellite (LEO ~500 km)",
+    type: "asat",
+    subtype: "Direct-ascent kinetic interceptor",
+    orbit: "LEO",
+    domain: "Space",
+    latitude: 45.0,
+    longitude: 80.0,
+    summary:
+      "ILLUSTRATIVE / FICTIONAL sample. A ground-launched direct-ascent interceptor destroys a defunct satellite, producing a large field of trackable debris. The destructive kinetic effect and debris signature read unambiguously as a weapon demonstration; no plausible benign mission produces the same observable outcome.",
+    severity: "critical",
+    confidence: "confirmed",
+    legibility: 5,
+    reversibility: 1,
+    escalation: 5,
+    salamiTactic: false,
+    tags: ["ILLUSTRATIVE", "Direct-Ascent ASAT", "Debris-Generating", "High Distinguishability"],
+    source: "Illustrative sample — not a real incident",
+    sourceTitle: "Illustrative sample",
+    sourceType: "thinktank",
+    sourceUrl: undefined,
+    differentiation: {
+      distinguishability: "high",
+      dualUseBasis:
+        "A kinetic interceptor that physically destroys a satellite and generates trackable debris has no benign counterpart — the destructive effect itself is the signature.",
+      rationale:
+        "Purpose is unambiguous from observable characteristics: a destructive direct-ascent ASAT test producing trackable debris reads unambiguously as a weapon demonstration. High distinguishability indicates low security dilemma intensity on this variable.",
+      confidence: "assessed",
+      sources: [
+        { label: "Illustrative sample — not a real incident" },
+        { label: "Jervis, R. (1978) 'Cooperation Under the Security Dilemma', World Politics 30(2)" },
+      ],
+    },
+  },
 ];
 
 // ─── Derived helpers ────────────────────────────────────────────────────────
@@ -799,6 +934,21 @@ export const getTypeColor       = (type) => INCIDENT_TYPES[type]?.color  ?? "#94
 export const getTypeLabel       = (type) => INCIDENT_TYPES[type]?.label  ?? type;
 export const getSeverityColor   = (sev)  => SEVERITY_LEVELS[sev]?.color  ?? "#94a3b8";
 export const getConfidenceColor = (c)    => CONFIDENCE_LEVELS[c]?.color  ?? "#94a3b8";
+
+// Differentiation helpers. An incident is "coded" only when it carries a
+// non-null `differentiation` object; everything else falls back to the
+// distinct UNCODED visual state.
+export const isDifferentiationCoded = (inc) =>
+  inc?.differentiation != null &&
+  inc.differentiation.distinguishability in DIFFERENTIATION_LEVELS;
+
+export const getDistinguishability = (inc) =>
+  isDifferentiationCoded(inc) ? inc.differentiation.distinguishability : null;
+
+export const getDistinguishabilityColor = (inc) =>
+  isDifferentiationCoded(inc)
+    ? DIFFERENTIATION_LEVELS[inc.differentiation.distinguishability].color
+    : DIFFERENTIATION_UNCODED.color;
 
 export const ACTORS     = [...new Set(INCIDENTS.map((i) => i.actor))].sort();
 export const YEARS      = [...new Set(INCIDENTS.map((i) => i.year))].sort();

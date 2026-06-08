@@ -1,5 +1,13 @@
 import { useEffect } from "react";
-import { getTypeColor, getSeverityColor, INCIDENT_TYPES, SEVERITY_LEVELS } from "../data/incidents";
+import {
+  getTypeColor,
+  getSeverityColor,
+  INCIDENT_TYPES,
+  SEVERITY_LEVELS,
+  DIFFERENTIATION_LEVELS,
+  DIFFERENTIATION_UNCODED,
+  isDifferentiationCoded,
+} from "../data/incidents";
 
 const JERVIS_AXES = [
   {
@@ -35,6 +43,12 @@ export default function IncidentModal({ incident, onClose }) {
 
   const typeColor = getTypeColor(incident.type);
   const sevColor  = getSeverityColor(incident.severity);
+
+  const diffCoded = isDifferentiationCoded(incident);
+  const diff      = diffCoded ? incident.differentiation : null;
+  const diffMeta  = diffCoded
+    ? DIFFERENTIATION_LEVELS[diff.distinguishability]
+    : DIFFERENTIATION_UNCODED;
 
   const riskIndex = (
     ((5 - incident.legibility) + incident.reversibility + incident.escalation) / 3
@@ -135,6 +149,72 @@ export default function IncidentModal({ incident, onClose }) {
               );
             })}
           </div>
+        </div>
+
+        {/* Offense–defense differentiation (Jervis) */}
+        <div className="modal-differentiation">
+          <p className="modal-section-title">Offense–Defense Differentiation</p>
+          {diffCoded ? (
+            <>
+              <div className="diff-headline">
+                <span
+                  className="diff-badge"
+                  style={{
+                    color: diffMeta.color,
+                    background: diffMeta.color + "1f",
+                    borderColor: diffMeta.color + "55",
+                  }}
+                >
+                  {diffMeta.label} distinguishability
+                </span>
+                <span className="diff-intensity">{diffMeta.intensity}</span>
+              </div>
+
+              <div className="diff-field">
+                <span className="diff-field-label">Dual-use basis</span>
+                <p className="diff-field-value">{diff.dualUseBasis}</p>
+              </div>
+              <div className="diff-field">
+                <span className="diff-field-label">Rationale</span>
+                <p className="diff-field-value">{diff.rationale}</p>
+              </div>
+              <div className="diff-field">
+                <span className="diff-field-label">Confidence</span>
+                <p className="diff-field-value diff-field-value--inline">{diff.confidence}</p>
+              </div>
+
+              {diff.sources?.length > 0 && (
+                <div className="diff-field">
+                  <span className="diff-field-label">Sources</span>
+                  <ul className="diff-sources">
+                    {diff.sources.map((s, i) => (
+                      <li key={i}>
+                        {s.url ? (
+                          <a href={s.url} target="_blank" rel="noreferrer">
+                            {s.label}
+                          </a>
+                        ) : (
+                          <span>{s.label}</span>
+                        )}
+                        {s.date && <span className="diff-source-date"> · {s.date}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="diff-uncoded">
+              <span
+                className="diff-badge diff-badge--uncoded"
+                style={{ color: diffMeta.color, borderColor: diffMeta.color + "88" }}
+              >
+                {diffMeta.label}
+              </span>
+              Not yet assessed for offense–defense differentiation. Lower
+              distinguishability would indicate higher security dilemma intensity.
+            </p>
+          )}
         </div>
 
         {/* Tags */}

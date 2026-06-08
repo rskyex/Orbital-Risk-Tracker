@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState, Suspense, lazy } from "react";
-import { INCIDENT_TYPES, getTypeColor } from "../../data/incidents";
+import {
+  INCIDENT_TYPES,
+  getTypeColor,
+  getDistinguishabilityColor,
+} from "../../data/incidents";
 
 // Lazy-load so Vite can code-split the heavy Three.js bundle
 const Globe = lazy(() => import("react-globe.gl"));
@@ -7,10 +11,15 @@ const Globe = lazy(() => import("react-globe.gl"));
 const NIGHT_TEXTURE   = "//unpkg.com/three-globe/example/img/earth-night.jpg";
 const WATER_TEXTURE   = "//unpkg.com/three-globe/example/img/earth-water.png";
 
-export default function OrbitalGlobe({ incidents, onIncidentClick }) {
+export default function OrbitalGlobe({ incidents, onIncidentClick, colorBy = "type" }) {
   const globeRef = useRef(null);
   const [hovered, setHovered] = useState(null);
   const [ready, setReady]   = useState(false);
+
+  // Point/ring colour resolves either by incident type (default layer) or by
+  // offense–defense distinguishability (Differentiation layer).
+  const colorFor = (d) =>
+    colorBy === "differentiation" ? getDistinguishabilityColor(d) : getTypeColor(d.type);
 
   // Auto-rotate
   useEffect(() => {
@@ -64,7 +73,7 @@ export default function OrbitalGlobe({ incidents, onIncidentClick }) {
         pointsData={incidents}
         pointLat="latitude"
         pointLng="longitude"
-        pointColor={(d) => getTypeColor(d.type)}
+        pointColor={(d) => colorFor(d)}
         pointRadius={(d) => (d.severity === "critical" ? 0.7 : d.severity === "high" ? 0.55 : 0.4)}
         pointAltitude={0.015}
         pointLabel={() => ""}
@@ -75,7 +84,7 @@ export default function OrbitalGlobe({ incidents, onIncidentClick }) {
         ringLat="lat"
         ringLng="lng"
         ringColor={(d) => (t) => {
-          const color = getTypeColor(d.type);
+          const color = colorFor(d);
           const hex = color.replace("#", "");
           const r = parseInt(hex.slice(0,2),16);
           const g = parseInt(hex.slice(2,4),16);

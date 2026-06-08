@@ -1,10 +1,27 @@
-import { useState } from "react";
-import { INCIDENTS, INCIDENT_TYPES, getTypeColor } from "../data/incidents";
+import { useMemo, useState } from "react";
+import {
+  INCIDENTS,
+  INCIDENT_TYPES,
+  DIFFERENTIATION_LEVELS,
+  DIFFERENTIATION_UNCODED,
+  getDistinguishability,
+} from "../data/incidents";
 import IncidentModal from "./IncidentModal";
 import OrbitalGlobe from "./globe/OrbitalGlobe";
 
 export default function GlobeSection() {
   const [selected, setSelected] = useState(null);
+  // "type" = default incident-type layer; "differentiation" = Jervis layer.
+  const [layer, setLayer] = useState("type");
+  // Differentiation-only filter: isolate low-distinguishability incidents.
+  const [lowOnly, setLowOnly] = useState(false);
+
+  const differentiationLayer = layer === "differentiation";
+
+  const visibleIncidents = useMemo(() => {
+    if (!differentiationLayer || !lowOnly) return INCIDENTS;
+    return INCIDENTS.filter((inc) => getDistinguishability(inc) === "low");
+  }, [differentiationLayer, lowOnly]);
 
   return (
     <section className="globe-section" id="globe">
@@ -22,26 +39,83 @@ export default function GlobeSection() {
           </p>
         </div>
 
+        {/* Layer control */}
+        <div className="globe-layer-controls reveal">
+          <span className="globe-layer-label">Map layer</span>
+          <div className="filter-group">
+            <button
+              className={`filter-pill ${layer === "type" ? "filter-pill--active" : ""}`}
+              onClick={() => setLayer("type")}
+            >
+              Incident Type
+            </button>
+            <button
+              className={`filter-pill ${differentiationLayer ? "filter-pill--active" : ""}`}
+              style={differentiationLayer ? { "--pill-color": DIFFERENTIATION_LEVELS.low.color } : {}}
+              onClick={() => setLayer("differentiation")}
+            >
+              Differentiation
+            </button>
+          </div>
+
+          {differentiationLayer && (
+            <button
+              className={`filter-pill ${lowOnly ? "filter-pill--active" : ""}`}
+              style={lowOnly ? { "--pill-color": DIFFERENTIATION_LEVELS.low.color } : {}}
+              onClick={() => setLowOnly((v) => !v)}
+            >
+              {lowOnly ? "✓ Low distinguishability only" : "Isolate low distinguishability"}
+            </button>
+          )}
+        </div>
+
         <div className="globe-layout">
           {/* Globe */}
           <div className="globe-container reveal">
             <OrbitalGlobe
-              incidents={INCIDENTS}
+              key={differentiationLayer ? "diff" : "type"}
+              incidents={visibleIncidents}
               onIncidentClick={setSelected}
+              colorBy={differentiationLayer ? "differentiation" : "type"}
             />
 
             {/* Legend */}
-            <div className="globe-legend">
-              {Object.entries(INCIDENT_TYPES).map(([key, def]) => (
-                <div key={key} className="globe-legend-item">
+            {differentiationLayer ? (
+              <div className="globe-legend globe-legend--differentiation">
+                {Object.entries(DIFFERENTIATION_LEVELS).map(([key, def]) => (
+                  <div key={key} className="globe-legend-item">
+                    <div
+                      className="globe-legend-dot"
+                      style={{ background: def.color, color: def.color }}
+                    />
+                    {def.label}
+                  </div>
+                ))}
+                <div className="globe-legend-item">
                   <div
-                    className="globe-legend-dot"
-                    style={{ background: def.color, color: def.color }}
+                    className="globe-legend-dot globe-legend-dot--uncoded"
+                    style={{ color: DIFFERENTIATION_UNCODED.color }}
                   />
-                  {def.label}
+                  {DIFFERENTIATION_UNCODED.label}
                 </div>
-              ))}
-            </div>
+                <p className="globe-legend-note">
+                  Lower distinguishability = <strong>higher security dilemma intensity</strong>.
+                  Hot end = offensive intent is indistinguishable from benign intent.
+                </p>
+              </div>
+            ) : (
+              <div className="globe-legend">
+                {Object.entries(INCIDENT_TYPES).map(([key, def]) => (
+                  <div key={key} className="globe-legend-item">
+                    <div
+                      className="globe-legend-dot"
+                      style={{ background: def.color, color: def.color }}
+                    />
+                    {def.label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Side panel */}
@@ -103,7 +177,7 @@ export default function GlobeSection() {
                   color: "var(--text-muted)",
                 }}
               >
-                {INCIDENTS.length} incidents plotted ·{" "}
+                {visibleIncidents.length} incidents plotted ·{" "}
                 {INCIDENTS.filter((i) => i.salamiTactic).length} classified as
                 salami tactics
               </p>
