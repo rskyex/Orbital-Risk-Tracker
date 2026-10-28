@@ -204,7 +204,7 @@ export default function AboutPage() {
               dilemma theory. Tracks state-attributed cyber incidents and their governance implications.</p>
             </a>
             <a href="https://lunar-mandate-atlas.vercel.app/" target="_blank" rel="noopener noreferrer" className="platform-module platform-module--link">
-              <h4 style={{ color: "var(--cyan)" }}>Space Mandate Atlas</h4>
+              <h4 style={{ color: "var(--cyan)" }}>Lunar Governance Tracker</h4>
               <p>Tracks international space governance mandates, treaty architectures, and
               institutional authority across orbital regimes and jurisdictions.</p>
             </a>
