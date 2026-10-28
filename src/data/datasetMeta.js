@@ -4,8 +4,8 @@ import { INCIDENTS } from "./incidents";
 
 // Bump these whenever incident records change.
 // DATASET_LAST_UPDATED is the date of the last change to src/data/incidents.js.
-export const DATASET_VERSION = "1.0.0";
-export const DATASET_LAST_UPDATED = "2026-06-08";
+export const DATASET_VERSION = "1.1.0";
+export const DATASET_LAST_UPDATED = "2026-10-28";
 export const SITE_URL = "https://orbitalrisktracker.vercel.app";
 
 /**
@@ -44,6 +44,7 @@ export const INCIDENT_COLUMNS = [
   { key: "sourceTitle", description: "Short source title." },
   { key: "sourceType", description: "official, thinktank, company, aviation or media." },
   { key: "sourceUrl", description: "Source URL, where recorded." },
+  { key: "sources", description: "All source URLs, separated by \" | \", where a record lists several." },
   { key: "summary", description: "Short summary." },
 ];
 
@@ -77,7 +78,7 @@ export function incidentsCsv() {
   const head = Object.entries(meta).map(([k, v]) => `# ${k}: ${v}`);
   const header = INCIDENT_COLUMNS.map((c) => c.key).join(",");
   const rows = INCIDENTS.map(withFlag).map((r) =>
-    INCIDENT_COLUMNS.map((c) => csvCell(r[c.key])).join(",")
+    INCIDENT_COLUMNS.map((c) => csvCell(c.key === "sources" ? r.sources?.map((s) => s.url) : r[c.key])).join(",")
   );
   return [...head, header, ...rows].join("\n");
 }

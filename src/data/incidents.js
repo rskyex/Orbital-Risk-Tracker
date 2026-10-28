@@ -707,10 +707,17 @@ export const INCIDENTS = [
     escalation: 4,
     salamiTactic: false,
     tags: ["AcidRain Wiper", "Pre-Invasion Strike", "Weaponized Interdependence", "Critical Infrastructure", "EU/US Attribution"],
-    source: "CISA/NCSC Advisory AA22-110A (2022); SentinelLabs 'AcidRain' analysis; US/UK/EU joint attribution May 2022",
-    sourceTitle: "CISA/NCSC AA22-110A / SentinelLabs",
+    source: "CISA/FBI Advisory AA22-076A (17 Mar 2022; updated 10 May 2022 with attribution to Russian state actors); Viasat KA-SAT overview (30 Mar 2022); SentinelLabs 'AcidRain' analysis (31 Mar 2022); EU High Representative declaration (10 May 2022)",
+    sourceTitle: "CISA/FBI AA22-076A",
     sourceType: "official",
-    sourceUrl: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-110a",
+    sourceUrl: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-076a",
+    // Same sources as the Cyber Escalation Atlas case "viasat-kasat", plus AA22-076A
+    sources: [
+      { title: "CISA/FBI AA22-076A: Strengthening Cybersecurity of SATCOM Network Providers and Customers", url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-076a", type: "official", date: "2022-03-17" },
+      { title: "Viasat: KA-SAT Network Cyber Attack Overview", url: "https://news.viasat.com/blog/corporate/ka-sat-network-cyber-attack-overview", type: "company", date: "2022-03-30" },
+      { title: "Guerrero-Saade & Chen (SentinelOne Labs): AcidRain — A Modem Wiper Rains Down on Europe", url: "https://www.sentinelone.com/labs/acidrain-a-modem-wiper-rains-down-on-europe/", type: "company", date: "2022-03-31" },
+      { title: "Council of the EU: Declaration by the High Representative on Russian cyber operations against Ukraine", url: "https://www.consilium.europa.eu/en/press/press-releases/2022/05/10/russian-cyber-operations-against-ukraine-declaration-by-the-high-representative-on-behalf-of-the-european-union/", type: "official", date: "2022-05-10" },
+    ],
   },
   {
     id: 22,
@@ -823,8 +830,8 @@ export const INCIDENTS = [
   {
     id: 26,
     title: "China SJ-21 GEO Satellite Tow Operation",
-    date: "2023-01-26",
-    year: 2023,
+    date: "2022-01-26",
+    year: 2022,
     actor: "China",
     target: "Compass-G2 / Beidou navigation satellite (GEO graveyard orbit)",
     type: "proximity",
@@ -842,10 +849,14 @@ export const INCIDENTS = [
     escalation: 3,
     salamiTactic: true,
     tags: ["GEO Tow Operation", "Grapple-and-Relocate", "Dual-Use RPO", "Salami Tactic", "Precedent-Setting"],
-    source: "SWF Space Threat Assessment 2023; Jones (2023) SpaceNews; CSIS Aerospace Security 2023",
+    source: "Breaking Defense, 26 Jan 2022 (ExoAnalytic tracking: docked ~22 Jan, separated 26 Jan 2022); SWF Space Threat Assessment 2023; Jones (2023) SpaceNews; CSIS Aerospace Security 2023",
     sourceTitle: "SWF Space Threat Assessment 2023 / SpaceNews",
     sourceType: "thinktank",
     sourceUrl: "https://swfound.org/",
+    sources: [
+      { title: "Hitchens (Breaking Defense): China's SJ-21 'tugs' dead satellite out of GEO belt: Trackers", url: "https://breakingdefense.com/2022/01/chinas-sj-21-tugs-dead-satellite-out-of-geo-belt-trackers/", type: "media", date: "2022-01-26" },
+      { title: "Secure World Foundation: Global Counterspace Capabilities / Space Threat Assessment", url: "https://swfound.org/", type: "thinktank" },
+    ],
   },
   {
     id: 27,

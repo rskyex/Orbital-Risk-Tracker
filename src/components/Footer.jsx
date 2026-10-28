@@ -26,7 +26,7 @@ export default function Footer() {
     "SWF Global Counterspace Capabilities",
     "CSIS Space Threat Assessment",
     "C4ADS 'Above Us Only Stars' (2019)",
-    "CISA/NCSC Advisory AA22-110A",
+    "CISA/FBI Advisory AA22-076A (SATCOM)",
     "OPSGROUP GPS Spoofing Reports",
   ];
 

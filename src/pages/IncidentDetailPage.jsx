@@ -110,7 +110,21 @@ export default function IncidentDetailPage() {
               <p style={{ color: "var(--text-dim)", fontSize: "0.9rem", marginBottom: "0.5rem" }}>
                 {inc.source}
               </p>
-              {inc.sourceTitle && (
+              {inc.sources?.length > 0 ? (
+                <ul data-testid="incident-sources" style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: "0.5rem" }}>
+                  {inc.sources.map((s) => (
+                    <li key={s.url} style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+                      <span className="source-type-badge" style={{ background: "var(--surface-2)" }}>
+                        {SOURCE_TYPES[s.type] || s.type}
+                      </span>
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="source-card-link" style={{ fontSize: "0.9rem" }}>
+                        {s.title} ↗
+                      </a>
+                      {s.date && <span style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>{s.date}</span>}
+                    </li>
+                  ))}
+                </ul>
+              ) : inc.sourceTitle && (
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
                   <span className="source-type-badge" style={{ background: "var(--surface-2)" }}>
                     {SOURCE_TYPES[inc.sourceType] || inc.sourceType}

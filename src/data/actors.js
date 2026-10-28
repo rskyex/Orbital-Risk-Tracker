@@ -50,8 +50,8 @@ export const ACTOR_PROFILES = [
     normPostureDesc: "Opposes US-led normative frameworks. Conducted destructive ASAT test in November 2021 (Cosmos 1408) despite international norms against such testing. Developing parallel governance proposals through COPUOS and bilateral channels with China. Systematic GNSS interference operations in Baltic, Nordic, and Middle Eastern airspace.",
     recentBehaviour: [
       { date: "2021-11", event: "Destructive ASAT test — Nudol interceptor destroyed Cosmos 1408, creating 1,632+ tracked fragments", type: "escalatory" },
-      { date: "2022-02", event: "Systematic Starlink jamming during Ukraine invasion", type: "escalatory" },
-      { date: "2023-05", event: "Cosmos 2558 inspector satellite placed near USA-326 (classified US NRO satellite)", type: "escalatory" },
+      { date: "2022-03", event: "Systematic Starlink jamming during Ukraine invasion", type: "escalatory" },
+      { date: "2022-08", event: "Cosmos 2558 inspector satellite placed near USA-326 (classified US NRO satellite)", type: "escalatory" },
       { date: "2024-08", event: "Luch/Olymp-K2 continued RPO activities near Western GEO assets", type: "escalatory" },
     ],
     riskFactors: [
@@ -81,7 +81,7 @@ export const ACTOR_PROFILES = [
     recentBehaviour: [
       { date: "2024-08", event: "Thousand Sails constellation first batch launch (14,000 planned)", type: "expansion" },
       { date: "2024-11", event: "Guowang constellation ITU filings for 12,992 satellites submitted", type: "expansion" },
-      { date: "2023-10", event: "SJ-21 conducted debris removal demonstration in GEO", type: "dual_use" },
+      { date: "2022-01", event: "SJ-21 towed defunct Compass-G2 to a graveyard orbit in GEO", type: "dual_use" },
       { date: "2025-02", event: "Continued Shijian-series RPO activities near GEO assets", type: "dual_use" },
     ],
     riskFactors: [
