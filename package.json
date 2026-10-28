@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run check:dates && vite build",
+    "check:data": "npm run check:dates",
     "check:dates": "node scripts/check-timeline-dates.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
