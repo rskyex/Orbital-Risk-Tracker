@@ -1,3 +1,4 @@
+import { isIllustrative } from "../data/datasetMeta";
 import { useMemo, useState } from "react";
 import {
   INCIDENTS,
@@ -313,9 +314,11 @@ export default function GlobeSection() {
                     color: "var(--text-muted)",
                   }}
                 >
-                  {visibleIncidents.length} incidents plotted ·{" "}
+                  {visibleIncidents.length} incidents plotted, including{" "}
+                  {visibleIncidents.filter(isIllustrative).length} illustrative
+                  (fictional) records ·{" "}
                   {INCIDENTS.filter((i) => i.salamiTactic).length} classified as
-                  salami tactics
+                  salami tactics (all records)
                 </p>
               </div>
             )}

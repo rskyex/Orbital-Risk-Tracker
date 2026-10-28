@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { label: "Actors",        anchor: "actors" },
   { label: "Incidents",     anchor: "explorer" },
   { label: "Radar",         to: "/radar" },
+  { label: "Data",          to: "/data" },
   { label: "About",         to: "/about" },
 ];
 

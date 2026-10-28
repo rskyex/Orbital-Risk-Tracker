@@ -8,6 +8,7 @@ import IncidentDetailPage from "./pages/IncidentDetailPage";
 import GovernancePage     from "./pages/GovernancePage";
 import AboutPage          from "./pages/AboutPage";
 import MethodologyPage    from "./pages/MethodologyPage";
+import DataPage           from "./pages/DataPage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/governance"    element={<GovernancePage />} />
         <Route path="/about"         element={<AboutPage />} />
         <Route path="/methodology"   element={<MethodologyPage />} />
+        <Route path="/data"          element={<DataPage />} />
       </Routes>
     </HashRouter>
   );

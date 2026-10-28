@@ -1,3 +1,4 @@
+import { DOCUMENTED_INCIDENTS } from "../data/datasetMeta";
 import { useState, useMemo } from "react";
 import {
   INCIDENTS,
@@ -119,7 +120,9 @@ export default function IncidentExplorer() {
 
         <p className="explorer-count reveal">
           Showing <strong>{filtered.length}</strong> of {INCIDENTS.length}{" "}
-          incidents
+          records ({DOCUMENTED_INCIDENTS.length} documented,{" "}
+          {INCIDENTS.length - DOCUMENTED_INCIDENTS.length} illustrative).
+          Illustrative records are fictional samples and are titled ILLUSTRATIVE.
         </p>
 
         {/* Cards grid */}

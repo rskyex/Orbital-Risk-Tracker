@@ -16,6 +16,7 @@ export default function Footer() {
     { label: "Governance",        to: "/governance" },
     { label: "Jervis Radar",      to: "/radar" },
     { label: "Data Sources",      to: "/data-sources" },
+    { label: "Data Downloads",    to: "/data" },
     { label: "About This Tracker", to: "/about" },
   ];
   const STACK = ["React", "Vite", "react-globe.gl", "Recharts", "Three.js", "react-router-dom"];

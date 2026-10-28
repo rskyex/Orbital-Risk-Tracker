@@ -1,6 +1,9 @@
 import { useState, Suspense, lazy, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { INCIDENTS, INCIDENT_TYPES, getTypeColor } from "../data/incidents";
+import { INCIDENT_TYPES, getTypeColor } from "../data/incidents";
+// The hero globe shows documented incidents only; the fictional ILLUSTRATIVE
+// samples appear in the analysis layers further down, where they are labelled.
+import { DOCUMENTED_INCIDENTS as INCIDENTS } from "../data/datasetMeta";
 import StarField from "./StarField";
 
 const Globe = lazy(() => import("react-globe.gl"));

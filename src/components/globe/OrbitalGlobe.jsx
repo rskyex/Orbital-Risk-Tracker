@@ -20,7 +20,22 @@ export default function OrbitalGlobe({
   authorityColorMap = {},
 }) {
   const globeRef = useRef(null);
+  const wrapRef = useRef(null);
+  const [size, setSize] = useState({ w: 0, h: 560 });
   const [hovered, setHovered] = useState(null);
+
+  // Size the canvas to its container. Without an explicit width the globe
+  // defaults to the full window width and pushes the page sideways.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(([entry]) => {
+      const w = Math.round(entry.contentRect.width);
+      setSize({ w, h: w < 600 ? Math.max(320, w) : 560 });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   const [ready, setReady]   = useState(false);
 
   // Point/ring colour resolves by the active layer: incident type (default),
@@ -59,10 +74,11 @@ export default function OrbitalGlobe({
     lng: inc.longitude,
     maxR: inc.severity === "critical" ? 4 : inc.severity === "high" ? 3 : 2,
     propagationSpeed: 1.5,
-    repeatPeriod: 700 + Math.random() * 400,
+    repeatPeriod: 700 + ((inc.id * 137) % 400), // deterministic, stable across re-renders
   }));
 
   return (
+    <div ref={wrapRef} className="orbital-globe-wrap">
     <Suspense
       fallback={
         <div className="globe-loading">
@@ -73,8 +89,8 @@ export default function OrbitalGlobe({
     >
       <Globe
         ref={globeRef}
-        width={undefined}
-        height={560}
+        width={size.w || undefined}
+        height={size.h}
         // Textures
         globeImageUrl={NIGHT_TEXTURE}
         bumpImageUrl={WATER_TEXTURE}
@@ -136,5 +152,6 @@ export default function OrbitalGlobe({
         </div>
       )}
     </Suspense>
+    </div>
   );
 }
