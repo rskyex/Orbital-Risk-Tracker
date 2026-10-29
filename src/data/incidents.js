@@ -144,6 +144,16 @@ const CONTESTED_COLOR = "#64748b"; // contested / unresolved share a neutral gre
 // See /methodology for full rubric and data limitations.
 // © Risa Koyanagi — data is compiled from public sources; see sourceTitle.
 
+// Optional structured fields, filled only where the record text or its cited
+// source supports them (read by the Faultline cross-domain layer):
+//   actorOrg         state organ named for the actor
+//   intrusionSetIds  MITRE ATT&CK group IDs (attack.mitre.org/groups)
+//   cyberVector      how a cyber incident reached the space system
+//   malwareFamilies  malware named in the record
+//   targetOperator   operator of the targeted system, where named
+//   relatedRecords   records in another Faultline dataset that a cited source
+//                    names together with this one: { id, sourceUrl }
+// No record names a legal instrument, so there is no instrumentsInvoked field yet.
 export const INCIDENTS = [
   {
     id: 1,
@@ -154,6 +164,7 @@ export const INCIDENTS = [
     target: "US NRO reconnaissance satellite (LEO)",
     type: "dazzling",
     subtype: "Ground-based laser illumination",
+    targetOperator: "US National Reconnaissance Office",
     orbit: "LEO",
     domain: "Space",
     latitude: 30.0,
@@ -208,6 +219,7 @@ export const INCIDENTS = [
     target: "USA-193 (failed NRO satellite, LEO ~250 km)",
     type: "asat",
     subtype: "Sea-based SM-3 interceptor (modified)",
+    targetOperator: "US National Reconnaissance Office",
     orbit: "LEO",
     domain: "Space",
     latitude: 36.0,
@@ -262,6 +274,7 @@ export const INCIDENTS = [
     target: "US RQ-170 Sentinel UAV (CIA/USAF)",
     type: "spoofing",
     subtype: "UAV GPS navigation spoofing",
+    targetOperator: "CIA / US Air Force",
     orbit: "N/A",
     domain: "Cyber-EM",
     latitude: 35.2,
@@ -370,6 +383,7 @@ export const INCIDENTS = [
     target: "Intelsat 7 / IS-901 commercial satellite (GEO ~13°E)",
     type: "proximity",
     subtype: "Sustained co-orbital proximity in GEO",
+    targetOperator: "Intelsat",
     orbit: "GEO",
     domain: "Space",
     latitude: 0,
@@ -397,6 +411,9 @@ export const INCIDENTS = [
     target: "Commercial satellite internet links (multiple countries)",
     type: "cyber",
     subtype: "Satellite downlink hijacking for C2 infrastructure",
+    actorOrg: "FSB",
+    intrusionSetIds: ["G0010"],
+    cyberVector: "Satellite downlink hijacking for command-and-control",
     orbit: "GEO",
     domain: "Cyber-EM",
     latitude: 55.7,
@@ -586,6 +603,7 @@ export const INCIDENTS = [
     target: "USA-245 (US NRO KH-11 reconnaissance satellite, LEO)",
     type: "proximity",
     subtype: "Inspector satellite tracking US national security asset",
+    targetOperator: "US National Reconnaissance Office",
     orbit: "LEO",
     domain: "Space",
     latitude: 62.9,
@@ -694,6 +712,12 @@ export const INCIDENTS = [
     target: "Viasat KA-SAT network (Ukraine + ~40,000 modems across Europe)",
     type: "cyber",
     subtype: "Satellite ground-segment wiper malware (AcidRain)",
+    actorOrg: "GRU",
+    intrusionSetIds: ["G0034"],
+    cyberVector: "Ground-segment compromise and wiper malware against user modems",
+    malwareFamilies: ["AcidRain"],
+    targetOperator: "Viasat",
+    relatedRecords: [{ id: "cyber:viasat-kasat", sourceUrl: "https://www.sentinelone.com/labs/acidrain-a-modem-wiper-rains-down-on-europe/" }],
     orbit: "GEO",
     domain: "Cyber-EM",
     latitude: 48.5,
@@ -728,6 +752,7 @@ export const INCIDENTS = [
     target: "SpaceX Starlink terminals (Ukrainian military and civilian users)",
     type: "jamming",
     subtype: "Satellite terminal uplink jamming",
+    targetOperator: "SpaceX (Starlink)",
     orbit: "LEO",
     domain: "Cyber-EM",
     latitude: 48.0,
@@ -782,6 +807,7 @@ export const INCIDENTS = [
     target: "USA-326 (US Space Force reconnaissance satellite, LEO)",
     type: "proximity",
     subtype: "Inspector satellite tracking US national security asset",
+    targetOperator: "US Space Force",
     orbit: "LEO",
     domain: "Space",
     latitude: 62.9,
@@ -809,6 +835,7 @@ export const INCIDENTS = [
     target: "Commercial aviation — Eastern Mediterranean, Middle East, Red Sea",
     type: "spoofing",
     subtype: "Large-scale airspace GPS spoofing",
+    actorOrg: "IDF (attribution contested)",
     orbit: "N/A",
     domain: "Cyber-EM",
     latitude: 32.0,
@@ -867,6 +894,7 @@ export const INCIDENTS = [
     target: "USA-314 (US Space Force reconnaissance satellite, LEO ~480 km)",
     type: "proximity",
     subtype: "Inspector satellite co-orbital RPO",
+    targetOperator: "US Space Force",
     orbit: "LEO",
     domain: "Space",
     latitude: 62.9,
