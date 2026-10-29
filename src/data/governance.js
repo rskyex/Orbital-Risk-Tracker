@@ -118,7 +118,7 @@ export const CONSTELLATION_GOVERNANCE_SCORES = [
     constellation: "Guowang",
     score: 82,
     components: { attribution: 72, normAdherence: 88, deorbitCompliance: 92, escalationCoupling: 76 },
-    note: "Highest-risk planned constellation. No public debris mitigation plan, LTS Guidelines not adopted, no ITU coordination agreement with existing NGSO operators.",
+    note: "Highest-risk planned constellation. No public debris mitigation plan, no public report of national LTS Guidelines implementation, no ITU coordination agreement with existing NGSO operators.",
   },
   {
     constellation: "Thousand Sails",
@@ -142,15 +142,7 @@ export const CONSTELLATION_GOVERNANCE_SCORES = [
     constellation: "BeiDou",
     score: 58,
     components: { attribution: 30, normAdherence: 72, deorbitCompliance: 48, escalationCoupling: 82 },
-    note: "Multi-orbit military/civilian system. China's non-adoption of LTS Guidelines and non-participation in Artemis Accords elevate governance risk.",
+    note: "Multi-orbit military/civilian system. No public report of China's national implementation of the LTS Guidelines (adopted by COPUOS consensus in 2019) and non-participation in the Artemis Accords elevate governance risk.",
   },
 ];
 
-// Overall orbital environment health score (composite)
-export const ORBITAL_HEALTH_SCORE = {
-  score: 38,
-  label: "Stressed",
-  description: "The orbital environment is under increasing governance strain. Debris density is rising faster than mitigation capacity, conjunction rates are accelerating, and the regulatory framework has not kept pace with the growth in operators and objects.",
-  trend: "deteriorating",
-  lastUpdated: "2025-04-12",
-};

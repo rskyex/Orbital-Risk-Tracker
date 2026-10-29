@@ -66,7 +66,9 @@ export default function IncidentModal({ incident, onClose }) {
   return (
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal glass">
-        <button className="modal-close" onClick={onClose}>×</button>
+        <button className="modal-close" onClick={onClose} aria-label="Close incident details">
+          <span aria-hidden="true">×</span>
+        </button>
 
         {/* Type + severity row */}
         <div className="modal-type-row">

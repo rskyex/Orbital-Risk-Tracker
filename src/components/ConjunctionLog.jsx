@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { CONJUNCTION_EVENTS, CONJUNCTION_SUMMARY } from "../data/conjunctions";
+import { referenceExport, SNAPSHOT_LABEL } from "../data/referenceMeta";
+import ReferenceBadge from "./ReferenceBadge";
 
 function getSevColor(sev) {
   if (sev === "critical") return "#ef4444";
@@ -17,7 +19,7 @@ export default function ConjunctionLog() {
     : CONJUNCTION_EVENTS.filter((e) => e.severity === filter);
 
   const exportJSON = () => {
-    const blob = new Blob([JSON.stringify(CONJUNCTION_EVENTS, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(referenceExport("conjunction-events", { events: CONJUNCTION_EVENTS, summary: CONJUNCTION_SUMMARY }), null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -33,9 +35,11 @@ export default function ConjunctionLog() {
           <p className="section-label">Data Layer</p>
           <h3 className="data-layer-title">Conjunction Event Log</h3>
           <p className="data-layer-desc">
-            Recent close-approach events with collision probability, object pair identification,
-            altitude band, and responsible operator. Format mirrors USSPACECOM CDM structure.
+            Illustrative close-approach events with collision probability, object pair identification,
+            altitude band, and responsible operator, in a format modelled on USSPACECOM conjunction
+            data messages. The event ids are synthetic, not real CDM numbers.
           </p>
+          <ReferenceBadge />
         </div>
         <button className="export-btn" onClick={exportJSON} title="Export as JSON">
           Export JSON
@@ -46,7 +50,7 @@ export default function ConjunctionLog() {
       <div className="conjunction-summary">
         <div className="conjunction-summary-item">
           <span className="conjunction-summary-value">{CONJUNCTION_SUMMARY.averageDailyAlerts}</span>
-          <span className="conjunction-summary-label">Avg. Daily Alerts</span>
+          <span className="conjunction-summary-label">Avg. Daily Alerts ({SNAPSHOT_LABEL})</span>
         </div>
         <div className="conjunction-summary-item">
           <span className="conjunction-summary-value" style={{ color: "#ef4444" }}>
@@ -56,7 +60,7 @@ export default function ConjunctionLog() {
         </div>
         <div className="conjunction-summary-item">
           <span className="conjunction-summary-value">{CONJUNCTION_SUMMARY.manoeuvresExecutedYTD}</span>
-          <span className="conjunction-summary-label">Manoeuvres YTD</span>
+          <span className="conjunction-summary-label">Manoeuvres ({SNAPSHOT_LABEL})</span>
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 // ─── Debris Density by Orbital Regime ─────────────────────────────────────
+// Reference layer: values compiled 2025-04-12, not live (see referenceMeta.js).
 // Representative static dataset mirroring Space-Track.org TLE data patterns.
 // Object counts are approximate and based on publicly available estimates
 // from NASA ODPO, ESA Space Debris Office, and 18th Space Defense Squadron
@@ -51,9 +52,14 @@ export const DEBRIS_DENSITY_DATA = [
     riskLevel: "critical",
     riskScore: 92,
     majorContributors: [
-      { event: "FY-1C ASAT (2007)", fragments: 3520, percentRemaining: 78 },
-      { event: "Cosmos 2251/Iridium 33 (2009)", fragments: 2296, percentRemaining: 64 },
-      { event: "Cosmos 1408 ASAT (2021)", fragments: 1632, percentRemaining: 91 },
+      // Cataloged fragments and share still in orbit, from NASA ODPO "Top-10 Worst Historical
+      // Breakup Events Based on Catalog Data as of 31 January 2023", ODQN vol. 27 issue 1:
+      // https://orbitaldebris.jsc.nasa.gov/quarterly-news/pdfs/odqnv27i1.pdf
+      // FY-1C 3532 cataloged / 2793 in orbit; Cosmos 2251 1715 / 1021 (Iridium 33 fragments
+      // are counted separately); Cosmos 1408 1785 / 364.
+      { event: "FY-1C ASAT (2007)", fragments: 3532, percentRemaining: 79 },
+      { event: "Cosmos 2251 (collision with Iridium 33, 2009)", fragments: 1715, percentRemaining: 60 },
+      { event: "Cosmos 1408 ASAT (2021)", fragments: 1785, percentRemaining: 20 },
       { event: "Starlink constellation ops", fragments: "N/A — operational", percentRemaining: 100 },
     ],
     densityTrend: "increasing",
@@ -127,13 +133,17 @@ export const DEBRIS_ALTITUDE_BANDS = [
   { altitude: 200, density: 0.8, label: "200 km" },
   { altitude: 300, density: 1.2, label: "300 km" },
   { altitude: 400, density: 2.1, label: "400 km — ISS" },
-  { altitude: 500, density: 3.8, label: "500 km" },
+  // Cosmos 1408 was at 490 x 465 km when destroyed (ODQN vol. 26 issue 1,
+  // https://orbitaldebris.jsc.nasa.gov/quarterly-news/pdfs/odqnv26i1.pdf); most fragments decayed by 2023.
+  { altitude: 500, density: 3.8, label: "500 km — Cosmos 1408 destroyed at ~480 km" },
   { altitude: 550, density: 4.2, label: "550 km — Starlink" },
   { altitude: 600, density: 5.1, label: "600 km" },
   { altitude: 700, density: 6.4, label: "700 km" },
-  { altitude: 780, density: 8.7, label: "780 km — FY-1C debris peak" },
+  { altitude: 780, density: 8.7, label: "780 km" },
   { altitude: 800, density: 9.2, label: "800 km — SSO peak" },
-  { altitude: 850, density: 8.1, label: "850 km — Cosmos 1408 debris" },
+  // FY-1C was in an 845 x 865 km orbit when destroyed (ODQN vol. 11 issue 2,
+  // https://orbitaldebris.jsc.nasa.gov/quarterly-news/pdfs/odqnv11i2.pdf).
+  { altitude: 850, density: 8.1, label: "850 km — FY-1C destroyed at ~865 km" },
   { altitude: 900, density: 5.8, label: "900 km" },
   { altitude: 1000, density: 3.9, label: "1,000 km" },
   { altitude: 1200, density: 2.1, label: "1,200 km" },

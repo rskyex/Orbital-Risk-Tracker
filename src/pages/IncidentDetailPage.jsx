@@ -66,7 +66,7 @@ export default function IncidentDetailPage() {
               {severityMeta.label}
             </span>
             <span className="source-type-badge" style={{ background: confidenceMeta.color + "22", color: confidenceMeta.color }}>
-              {confidenceMeta.label} Confidence
+              {inc.confidence === "n/a (fictional)" ? "Confidence: n/a (fictional record)" : `${confidenceMeta.label} Confidence`}
             </span>
             {inc.salamiTactic && (
               <span className="source-type-badge" style={{ background: "#e879f922", color: "#e879f9" }}>

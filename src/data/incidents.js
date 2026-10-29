@@ -20,6 +20,7 @@ export const CONFIDENCE_LEVELS = {
   high:      { label: "High",        color: "#4488ff" },
   medium:    { label: "Medium",      color: "#f59e0b" },
   contested: { label: "Contested",   color: "#ef4444" },
+  "n/a (fictional)": { label: "n/a (fictional)", color: "#7184a0" },
 };
 
 export const SOURCE_TYPES = {
@@ -962,7 +963,7 @@ export const INCIDENTS = [
     summary:
       "ILLUSTRATIVE / FICTIONAL sample. A maneuverable inspector satellite holds a sustained close co-orbital station near another state's GEO communications satellite. The same robotic-arm and proximity-sensing hardware is equally consistent with on-orbit inspection, life-extension servicing, or attack positioning — the offensive intent cannot be distinguished from benign intent on observable behaviour alone.",
     severity: "high",
-    confidence: "medium",
+    confidence: "n/a (fictional)",
     legibility: 2,
     reversibility: 4,
     escalation: 4,
@@ -1001,7 +1002,7 @@ export const INCIDENTS = [
     summary:
       "ILLUSTRATIVE / FICTIONAL sample. A ground-launched direct-ascent interceptor destroys a defunct satellite, producing a large field of trackable debris. The destructive kinetic effect and debris signature read unambiguously as a weapon demonstration; no plausible benign mission produces the same observable outcome.",
     severity: "critical",
-    confidence: "confirmed",
+    confidence: "n/a (fictional)",
     legibility: 5,
     reversibility: 1,
     escalation: 5,
@@ -1040,7 +1041,7 @@ export const INCIDENTS = [
     summary:
       "ILLUSTRATIVE / FICTIONAL sample. State A's satellite makes a close approach to State B's reconnaissance asset. State A calls it a routine, pre-notified station-keeping manoeuvre; State B calls it a deliberate failure to exercise 'due regard' and an act of harassment. State B's characterisation dominates subsequent reporting and a closed-door consultation, so interpretive authority effectively settles with State B — even though 'due regard' is never defined.",
     severity: "medium",
-    confidence: "medium",
+    confidence: "n/a (fictional)",
     legibility: 3,
     reversibility: 4,
     escalation: 3,
@@ -1078,7 +1079,7 @@ export const INCIDENTS = [
     summary:
       "ILLUSTRATIVE / FICTIONAL sample. A regional navigation outage is variously framed as hostile jamming, an accidental spillover from a military exercise, and ordinary spectrum congestion. Each actor invokes 'harmful interference' to mean something different, no characterisation prevails, and no body adjudicates — interpretive authority is left unallocated.",
     severity: "medium",
-    confidence: "contested",
+    confidence: "n/a (fictional)",
     legibility: 2,
     reversibility: 5,
     escalation: 2,

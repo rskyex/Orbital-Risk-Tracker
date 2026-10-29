@@ -56,6 +56,9 @@ export const CONSTELLATION_JURISDICTION = [
     notes: "FCC-licensed. Early deployment phase. 3,236 satellites planned.",
   },
   {
+    // COPUOS adopted the LTS Guidelines by consensus in June 2019 (A/74/20, Annex II); no public
+    // report of China's national implementation was found. Guowang launches began 16 Dec 2024
+    // (Space.com: https://space.com/space-exploration/launches-spacecraft/china-launches-1st-set-of-spacecraft-for-planned-13-000-satellite-broadband-constellation-photo).
     constellation: "Guowang",
     operator: "China SatNet (state-owned)",
     licensingState: "China",
@@ -63,11 +66,11 @@ export const CONSTELLATION_JURISDICTION = [
     registrationState: "China",
     objectCount: 0,
     regime: "LEO",
-    treaties: { OST: "ratified", LIABILITY: "ratified", REGISTRATION: "ratified", LTS: "not_adopted", ARTEMIS: "non_signatory", ITU: "filings_pending" },
+    treaties: { OST: "ratified", LIABILITY: "ratified", REGISTRATION: "ratified", LTS: "consensus_2019", ARTEMIS: "non_signatory", ITU: "filings_pending" },
     eolPolicy: "Not publicly stated",
     deorbitCompliance: "unknown",
     jurisdictionRisk: "high",
-    notes: "State-owned enterprise operating under PRC national space law. 12,992 satellites planned. No publicly available debris mitigation plan. LTS Guidelines not adopted by China. Pre-deployment phase.",
+    notes: "State-owned enterprise operating under PRC national space law. 12,992 satellites planned. No publicly available debris mitigation plan. No public report of China's national LTS Guidelines implementation. Deployment began with the first launch on 16 Dec 2024.",
   },
   {
     constellation: "Thousand Sails (G60)",
@@ -77,7 +80,7 @@ export const CONSTELLATION_JURISDICTION = [
     registrationState: "China",
     objectCount: 36,
     regime: "LEO",
-    treaties: { OST: "ratified", LIABILITY: "ratified", REGISTRATION: "ratified", LTS: "not_adopted", ARTEMIS: "non_signatory", ITU: "filings_pending" },
+    treaties: { OST: "ratified", LIABILITY: "ratified", REGISTRATION: "ratified", LTS: "consensus_2019", ARTEMIS: "non_signatory", ITU: "filings_pending" },
     eolPolicy: "Not publicly stated",
     deorbitCompliance: "unknown",
     jurisdictionRisk: "high",
@@ -119,7 +122,7 @@ export const CONSTELLATION_JURISDICTION = [
     registrationState: "China",
     objectCount: 44,
     regime: "MEO/GEO/IGSO",
-    treaties: { OST: "ratified", LIABILITY: "ratified", REGISTRATION: "ratified", LTS: "not_adopted", ARTEMIS: "non_signatory", ITU: "compliant" },
+    treaties: { OST: "ratified", LIABILITY: "ratified", REGISTRATION: "ratified", LTS: "consensus_2019", ARTEMIS: "non_signatory", ITU: "compliant" },
     eolPolicy: "Graveyard orbit disposal (for GEO/MEO components)",
     deorbitCompliance: "moderate",
     jurisdictionRisk: "medium",

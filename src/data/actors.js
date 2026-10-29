@@ -72,12 +72,12 @@ export const ACTOR_PROFILES = [
       OST: "ratified",
       LIABILITY: "ratified",
       REGISTRATION: "ratified",
-      LTS: "not_adopted",
+      LTS: "consensus_2019",
       ARTEMIS: "non_signatory",
       ITU: "filings_pending",
     },
     normPosture: "rule-taker",
-    normPostureDesc: "Participates in COPUOS but has not adopted LTS Guidelines. Non-signatory to Artemis Accords. Developing independent normative positions and pursuing bilateral agreements. Rapid expansion of space capabilities creating facts on the ground that outpace governance frameworks.",
+    normPostureDesc: "Joined the 2019 COPUOS consensus adopting the LTS Guidelines; national implementation is not publicly documented. Non-signatory to Artemis Accords. Developing independent normative positions and pursuing bilateral agreements. Rapid expansion of space capabilities creating facts on the ground that outpace governance frameworks.",
     recentBehaviour: [
       { date: "2024-08", event: "Thousand Sails constellation first batch launch (14,000 planned)", type: "expansion" },
       { date: "2024-11", event: "Guowang constellation ITU filings for 12,992 satellites submitted", type: "expansion" },
@@ -87,7 +87,7 @@ export const ACTOR_PROFILES = [
     riskFactors: [
       "Conducted destructive ASAT test in 2007 (FY-1C) — largest debris event in history",
       "Two mega-constellations planned (~27,000 satellites) with no public debris mitigation plans",
-      "LTS Guidelines not adopted",
+      "No public report of national LTS Guidelines implementation",
       "Dual-use space activities (SJ-21 debris removal / potential ASAT capability)",
     ],
     governanceScore: 72,

@@ -1,6 +1,7 @@
 // ─── Spectrum Congestion Index ─────────────────────────────────────────────
 // Maps ITU-filed vs active frequency allocations by GEO slot.
 // Data structured to mirror ITU Space Network Systems (SNS) database patterns.
+// Reference layer: values compiled 2025-04-12, not live (see referenceMeta.js).
 // Filings and disputes are illustrative but based on documented coordination cases.
 
 export const SPECTRUM_BANDS = {
@@ -165,7 +166,9 @@ export const NGSO_CONSTELLATION_FILINGS = [
   { name: "Starlink (Gen2)", operator: "SpaceX", state: "United States", satellites: 29988, bands: ["Ku", "Ka", "V"], status: "partially_deployed", filingStatus: "approved" },
   { name: "OneWeb", operator: "Eutelsat OneWeb", state: "United Kingdom", satellites: 648, bands: ["Ku", "Ka"], status: "operational", filingStatus: "approved" },
   { name: "Kuiper", operator: "Amazon", state: "United States", satellites: 3236, bands: ["Ka"], status: "early_deployment", filingStatus: "approved" },
-  { name: "Guowang", operator: "China SatNet", state: "China", satellites: 12992, bands: ["Ku", "Ka", "V"], status: "pre_deployment", filingStatus: "filed" },
+  // Guowang: first launch (10 satellites, Long March 5B, Wenchang) on 16 Dec 2024. Source: Space.com,
+  // https://space.com/space-exploration/launches-spacecraft/china-launches-1st-set-of-spacecraft-for-planned-13-000-satellite-broadband-constellation-photo
+  { name: "Guowang", operator: "China SatNet", state: "China", satellites: 12992, bands: ["Ku", "Ka", "V"], status: "deploying", filingStatus: "filed" },
   { name: "Thousand Sails (G60)", operator: "Shanghai Spacecom", state: "China", satellites: 14000, bands: ["Ku", "Ka"], status: "early_deployment", filingStatus: "filed" },
   { name: "Lightspeed", operator: "Telesat", state: "Canada", satellites: 198, bands: ["Ka"], status: "pre_deployment", filingStatus: "approved" },
   { name: "Iris²", operator: "EU Consortium", state: "EU", satellites: 290, bands: ["Ka", "Q"], status: "pre_deployment", filingStatus: "filed" },

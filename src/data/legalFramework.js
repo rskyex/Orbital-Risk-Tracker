@@ -23,13 +23,16 @@ export const TREATY_COMPLIANCE_MATRIX = [
     ARTEMIS: "non_signatory",
     ITU: "compliant",
   },
+  // COPUOS, of which China is a member, adopted the LTS Guidelines by consensus in June 2019 (A/74/20, Annex II;
+  // https://www.unoosa.org/oosa/en/ourwork/topics/long-term-sustainability-of-outer-space-activities.html).
+  // This dataset found no public report of China's national implementation.
   {
     actor: "China",
     actorId: "china",
     OST: "ratified",
     LIABILITY: "ratified",
     REGISTRATION: "ratified",
-    LTS: "not_adopted",
+    LTS: "consensus_2019",
     ARTEMIS: "non_signatory",
     ITU: "filings_pending",
   },
@@ -102,6 +105,7 @@ export const COMPLIANCE_STATUS_LABELS = {
   adopted: { label: "Adopted", color: "#10b981", icon: "check" },
   partially_adopted: { label: "Partial", color: "#f59e0b", icon: "partial" },
   not_adopted: { label: "Not adopted", color: "#ef4444", icon: "x" },
+  consensus_2019: { label: "2019 consensus; national implementation not documented", color: "#f59e0b", icon: "partial" },
   signatory: { label: "Signatory", color: "#10b981", icon: "check" },
   non_signatory: { label: "Non-signatory", color: "#ef4444", icon: "x" },
   compliant: { label: "Compliant", color: "#10b981", icon: "check" },

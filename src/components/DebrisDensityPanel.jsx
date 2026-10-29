@@ -4,6 +4,8 @@ import {
   ResponsiveContainer, Cell, AreaChart, Area,
 } from "recharts";
 import { ORBITAL_REGIMES, DEBRIS_DENSITY_DATA, DEBRIS_ALTITUDE_BANDS } from "../data/debrisDensity";
+import { referenceExport } from "../data/referenceMeta";
+import ReferenceBadge from "./ReferenceBadge";
 
 function getRiskColor(level) {
   if (level === "critical") return "#ef4444";
@@ -27,7 +29,7 @@ export default function DebrisDensityPanel() {
   }));
 
   const exportJSON = () => {
-    const blob = new Blob([JSON.stringify({ DEBRIS_DENSITY_DATA, DEBRIS_ALTITUDE_BANDS }, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(referenceExport("debris-density", { DEBRIS_DENSITY_DATA, DEBRIS_ALTITUDE_BANDS }), null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -47,6 +49,7 @@ export default function DebrisDensityPanel() {
             regimes. Source pattern: Space-Track.org TLE catalogue, NASA ODPO, ESA Space
             Debris Office.
           </p>
+          <ReferenceBadge />
         </div>
         <button className="export-btn" onClick={exportJSON} title="Export as JSON">
           Export JSON

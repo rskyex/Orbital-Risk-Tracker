@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { SPECTRUM_BANDS, GEO_SLOT_DATA, SPECTRUM_SUMMARY, NGSO_CONSTELLATION_FILINGS } from "../data/spectrumCongestion";
+import { referenceExport } from "../data/referenceMeta";
+import ReferenceBadge from "./ReferenceBadge";
 
 function getDisputeColor(status) {
   if (status === "disputed") return "#ef4444";
@@ -27,7 +29,7 @@ export default function SpectrumCongestionPanel() {
 
   const exportJSON = () => {
     const data = { GEO_SLOT_DATA, SPECTRUM_SUMMARY, NGSO_CONSTELLATION_FILINGS };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(referenceExport("spectrum-congestion", data), null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -46,6 +48,7 @@ export default function SpectrumCongestionPanel() {
             ITU-filed vs active frequency allocations by GEO slot. Flags disputed or
             overlapping filings. NGSO constellation filing status.
           </p>
+          <ReferenceBadge />
         </div>
         <button className="export-btn" onClick={exportJSON}>Export JSON</button>
       </div>

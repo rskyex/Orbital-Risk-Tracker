@@ -122,6 +122,7 @@ export default function TimelineSlider() {
             min={2000}
             max={2025}
             value={range[0]}
+            aria-label="Start year"
             onChange={(e) => {
               const v = parseInt(e.target.value);
               if (v < range[1]) setRange([v, range[1]]);
@@ -133,6 +134,7 @@ export default function TimelineSlider() {
             min={2000}
             max={2025}
             value={range[1]}
+            aria-label="End year"
             onChange={(e) => {
               const v = parseInt(e.target.value);
               if (v > range[0]) setRange([range[0], v]);
