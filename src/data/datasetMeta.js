@@ -4,8 +4,8 @@ import { INCIDENTS } from "./incidents";
 
 // Bump these whenever incident records change.
 // DATASET_LAST_UPDATED is the date of the last change to src/data/incidents.js.
-export const DATASET_VERSION = "1.1.0";
-export const DATASET_LAST_UPDATED = "2026-10-28";
+export const DATASET_VERSION = "1.2.0";
+export const DATASET_LAST_UPDATED = "2026-10-29";
 export const SITE_URL = "https://orbitalrisktracker.vercel.app";
 
 /**
