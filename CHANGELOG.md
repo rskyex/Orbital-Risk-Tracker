@@ -1,5 +1,32 @@
 # Changelog
 
+## Dataset 1.3.0 — 2026-10-29
+
+Scoring (src/data/scoring.js, one place for every derived score):
+
+- Reversibility direction: 1 = irreversible, 5 = instantly reversible, as in the data. The
+  methodology page's rubric was reversed and is corrected.
+- Risk Index = ((6 − legibility) + (6 − reversibility) + escalation) / 3, exactly 1–5, replacing
+  four copies of ((5 − L) + R + E) / 3, which ranked irreversible ASAT tests lowest (2.00) and ran
+  0.67–4.67. Exports include the computed riskIndex.
+- Salami tactic is computed: legibility ≤ 3 and reversibility ≥ 3 (was hand-coded; the page's
+  stated rule fitted 7 of 32 records). 21 of 32 records qualify. No longer salami: Baltic/Nordic
+  GNSS jamming, Starlink jamming in Ukraine and the systematic GNSS EW campaign (openly attributed,
+  legibility 4) and the SJ-21 tow (reversibility 2).
+
+Governance risk scores:
+
+- Overall scores are computed as the mean of the four sub-scores.
+- Constellation norm adherence is derived from the treaty compliance matrix for the licensing
+  state (Starlink 31, Guowang 68, Thousand Sails 65, GPS 26, GLONASS 46, BeiDou 48 overall).
+  OneWeb (UK not in the matrix) and all regime scores keep author judgement, labelled as such.
+- Each sub-score shows its basis and a rubric line with its inputs.
+
+Coding: differentiation and interpretation are coded on two documented incidents with sources:
+Fengyun-1C (distinguishability high; interpretation settled, with China's dissent noted) and
+Cosmos 2576 (distinguishability low; interpretation contested between USSPACECOM and Russia's
+foreign ministry).
+
 ## Dataset 1.2.0 — 2026-10-29
 
 Reference layers:

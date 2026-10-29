@@ -11,6 +11,7 @@ import {
   isDifferentiationCoded,
   isInterpretationCoded,
 } from "../data/incidents";
+import { riskIndex as computeRiskIndex } from "../data/scoring";
 
 const JERVIS_AXES = [
   {
@@ -59,9 +60,7 @@ export default function IncidentModal({ incident, onClose }) {
     ? INTERPRETATION_STATUS[interp.status]
     : INTERPRETATION_UNCODED;
 
-  const riskIndex = (
-    ((5 - incident.legibility) + incident.reversibility + incident.escalation) / 3
-  ).toFixed(1);
+  const riskIndex = computeRiskIndex(incident).toFixed(1);
 
   return (
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>

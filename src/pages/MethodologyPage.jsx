@@ -21,13 +21,13 @@ const AXES = [
     label: "Reversibility",
     color: "#f59e0b",
     description:
-      "Can the effects of the incident be undone? Irreversible actions (e.g., kinetic ASAT debris) permanently alter the operational environment.",
+      "Can the effects of the incident be undone? Higher scores are more reversible. Irreversible actions (e.g., kinetic ASAT debris) permanently alter the operational environment and score 1.",
     rubric: [
-      { score: 1, text: "Fully reversible — effect ends when action stops" },
-      { score: 2, text: "Short-term effects (hours to days)" },
+      { score: 1, text: "Irreversible — asset destroyed, debris generated, or permanent disruption" },
+      { score: 2, text: "Long-term effects (years); asset damaged but not destroyed" },
       { score: 3, text: "Medium-term effects (weeks to months)" },
-      { score: 4, text: "Long-term effects (years); asset damaged but not destroyed" },
-      { score: 5, text: "Irreversible — asset destroyed, debris generated, or permanent disruption" },
+      { score: 4, text: "Short-term effects (hours to days)" },
+      { score: 5, text: "Fully reversible — effect ends when action stops" },
     ],
   },
   {
@@ -147,17 +147,19 @@ export default function MethodologyPage() {
         <section className="method-section">
           <h2 className="method-section-title">Risk Index Calculation</h2>
           <p className="method-body">
-            The composite Risk Index condenses the three Jervis axes into a single 1–5 score,
-            weighted to emphasize the strategic threat posed by low-visibility, irreversible
-            actions:
+            The composite Risk Index condenses the three Jervis axes into a single score on
+            exactly 1–5, rising for low-visibility, irreversible and escalatory actions:
           </p>
           <div className="method-formula-box">
-            <code>Risk Index = ((5 − Legibility) + Reversibility + Escalation) / 3</code>
+            <code>Risk Index = ((6 − Legibility) + (6 − Reversibility) + Escalation) / 3</code>
           </div>
           <p className="method-body">
-            Legibility is <em>inverted</em> (5 − Legibility) because low legibility increases
-            risk: covert actions are harder to deter. Reversibility and Escalation are additive.
-            The result is normalised to a 1–5 scale.
+            Legibility and Reversibility are <em>inverted</em> (6 − score): low legibility raises
+            risk because covert actions are harder to deter, and low reversibility raises risk
+            because the effects last. Escalation adds directly. With each axis on 1–5, the result
+            runs from exactly 1 to 5. Earlier versions added reversibility as coded, which ranked
+            irreversible ASAT tests as the least risky incidents; the formula is computed in one
+            place (src/data/scoring.js).
           </p>
           <p className="method-body">
             This formula is a simplification intended for visualization and comparison. Real
@@ -176,19 +178,24 @@ export default function MethodologyPage() {
             the strategic landscape.
           </p>
           <p className="method-body">
-            In this dataset, an incident is flagged as a salami tactic when it meets two
-            conditions:
+            In this dataset the flag is computed, not coded by hand. An incident is a salami
+            tactic when it meets both conditions:
           </p>
           <ul className="method-list">
             <li>
-              <strong>Legibility ≤ 2</strong> — the action is covert or barely detectable,
-              enabling deniability
+              <strong>Legibility ≤ 3</strong> — the action is not clearly interpretable, so
+              the actor or its intent can be denied
             </li>
             <li>
-              <strong>Reversibility ≤ 2</strong> — the action leaves a lasting strategic
-              footprint despite its apparent subtlety
+              <strong>Reversibility ≥ 3</strong> — the effects can be undone, so each step
+              stays below the threshold for a response
             </li>
           </ul>
+          <p className="method-body">
+            Overt, attributed jamming (legibility 4) and irreversible acts such as ASAT tests or
+            towing a satellite to a graveyard orbit (reversibility 1–2) are therefore not salami
+            steps, even when they form part of a pattern.
+          </p>
           <p className="method-body">
             This operationalization draws on Thomas Schelling's concept of compellence and the
             application of salami tactics to contemporary gray-zone conflict by Brands (2016)

@@ -88,8 +88,10 @@ export default function Methodology() {
                   deniable probes. No single incident justifies escalation;
                   collectively they shift the status quo.
                   <br /><br />
-                  Classified as salami: proximity ops, jamming campaigns, GPS
-                  spoofing. Not salami: overt ASAT tests, strategic cyberattacks.
+                  Classified as salami (legibility ≤ 3 and reversibility ≥ 3):
+                  most proximity ops, deniable jamming and GPS spoofing. Not
+                  salami: overt ASAT tests, destructive cyberattacks, and
+                  openly attributed wartime jamming.
                 </>
               ),
             },

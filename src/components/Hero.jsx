@@ -5,6 +5,7 @@ import { INCIDENT_TYPES, getTypeColor } from "../data/incidents";
 // samples appear in the analysis layers further down, where they are labelled.
 import { DOCUMENTED_INCIDENTS as INCIDENTS } from "../data/datasetMeta";
 import StarField from "./StarField";
+import { riskIndex as computeRiskIndex } from "../data/scoring";
 
 const Globe = lazy(() => import("react-globe.gl"));
 
@@ -28,9 +29,7 @@ function GlobeInfoPanel({ incident, onClose }) {
 
   const typeColor = getTypeColor(incident.type);
   const typeMeta  = INCIDENT_TYPES[incident.type] || {};
-  const riskIndex = (
-    ((5 - incident.legibility) + incident.reversibility + incident.escalation) / 3
-  ).toFixed(1);
+  const riskIndex = computeRiskIndex(incident).toFixed(1);
 
   return (
     <div className="globe-info-panel" style={{ borderColor: typeColor + "66" }}>

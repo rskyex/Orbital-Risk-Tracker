@@ -2,6 +2,13 @@
 // Composite risk scores per orbital regime and constellation cluster.
 // Score is 0–100 where higher = greater governance risk.
 // Methodology draws on four sub-components weighted equally (25% each).
+// The overall score is computed (governanceOverall), never typed by hand.
+// Norm adherence for constellations is derived from the treaty compliance
+// matrix for the licensing state; every other sub-score is author judgement
+// against the rubric below.
+
+import { TREATY_COMPLIANCE_MATRIX, TREATY_COLUMNS } from "./legalFramework.js";
+import { governanceOverall, normAdherenceFromMatrix } from "./scoring.js";
 
 export const GOVERNANCE_METHODOLOGY = {
   title: "Governance Risk Score — Methodology",
@@ -13,13 +20,17 @@ export const GOVERNANCE_METHODOLOGY = {
       weight: 0.25,
       description: "Can a malicious or negligent act be traced to a responsible state or operator? Scores the difficulty of identifying the responsible party for a debris-generating or interference event in this regime. Factors: object catalogue completeness, operator transparency, dual-use ambiguity, state registration compliance.",
       scale: "0 = clear attribution chain; 100 = attribution functionally impossible",
+      basis: "Author judgement",
+      rubric: "Inputs: public tracking coverage of the regime (SSN, commercial SSA), operator transparency on positions and manoeuvres, and whether past interference in the regime was attributed.",
     },
     {
       id: "normAdherence",
       label: "Norm Adherence",
       weight: 0.25,
-      description: "Is the operator or state party to relevant legal instruments and soft-law frameworks? Scores the aggregate treaty participation and guideline adoption of actors operating in this regime. Weighted by Treaty Compliance Matrix data from Section 7.",
+      description: "Is the operator's licensing state party to the relevant legal instruments and soft-law frameworks? For constellations this is derived from the treaty compliance matrix: each instrument scores 1 (ratified, adopted, signatory, compliant), 0.5 (partial, filings pending, 2019 LTS consensus without documented implementation) or 0 (not adopted, non-signatory), and the sub-score is 100 × (1 − mean). Regime scores aggregate many operators and remain author judgement.",
       scale: "0 = full adherence to all applicable instruments; 100 = no adherence to any applicable instrument",
+      basis: "Derived from the treaty compliance matrix (constellations); author judgement (regimes, and states not in the matrix)",
+      rubric: "Inputs: the licensing state's row in the treaty compliance matrix (OST, Liability, Registration, LTS Guidelines, Artemis Accords, ITU).",
     },
     {
       id: "deorbitCompliance",
@@ -27,6 +38,8 @@ export const GOVERNANCE_METHODOLOGY = {
       weight: 0.25,
       description: "Based on constellation size, stated end-of-life (EOL) policy, and historical compliance rates for the operator or state. Larger constellations with no stated EOL policy score higher (greater risk).",
       scale: "0 = assured deorbit compliance; 100 = no deorbit plan or capacity",
+      basis: "Author judgement",
+      rubric: "Inputs: stated end-of-life policy (none / stated / demonstrated), constellation size band, and the operator's or state's disposal track record.",
     },
     {
       id: "escalationCoupling",
@@ -34,6 +47,8 @@ export const GOVERNANCE_METHODOLOGY = {
       weight: 0.25,
       description: "Does this object or regime intersect with dual-use or military assets? Scores the degree to which a collision, interference, or governance failure in this regime could escalate into interstate tension or military response. Factors: military asset proximity, dual-use infrastructure dependence, adversary co-location.",
       scale: "0 = no escalation coupling; 100 = direct military escalation pathway",
+      basis: "Author judgement",
+      rubric: "Inputs: military or dual-use payloads or customers, national-security dependence on the service, and documented counterspace activity against the regime.",
     },
   ],
   colorScale: [
@@ -43,10 +58,9 @@ export const GOVERNANCE_METHODOLOGY = {
   ],
 };
 
-export const REGIME_GOVERNANCE_SCORES = [
+const REGIME_INPUTS = [
   {
     regime: "LEO",
-    overallScore: 74,
     components: {
       attribution: 62,
       normAdherence: 68,
@@ -57,7 +71,6 @@ export const REGIME_GOVERNANCE_SCORES = [
   },
   {
     regime: "MEO",
-    overallScore: 52,
     components: {
       attribution: 28,
       normAdherence: 42,
@@ -68,7 +81,6 @@ export const REGIME_GOVERNANCE_SCORES = [
   },
   {
     regime: "GEO",
-    overallScore: 61,
     components: {
       attribution: 34,
       normAdherence: 55,
@@ -79,7 +91,6 @@ export const REGIME_GOVERNANCE_SCORES = [
   },
   {
     regime: "HEO",
-    overallScore: 38,
     components: {
       attribution: 42,
       normAdherence: 35,
@@ -90,7 +101,6 @@ export const REGIME_GOVERNANCE_SCORES = [
   },
   {
     regime: "SSO",
-    overallScore: 71,
     components: {
       attribution: 58,
       normAdherence: 65,
@@ -101,48 +111,71 @@ export const REGIME_GOVERNANCE_SCORES = [
   },
 ];
 
-export const CONSTELLATION_GOVERNANCE_SCORES = [
+const CONSTELLATION_INPUTS = [
   {
     constellation: "Starlink",
-    score: 35,
+    licensingState: "United States",
     components: { attribution: 12, normAdherence: 18, deorbitCompliance: 38, escalationCoupling: 72 },
     note: "Low governance risk on individual satellite compliance, but systemic risk from scale (60% of LEO) and dual-use military provision.",
   },
   {
     constellation: "OneWeb",
-    score: 24,
+    licensingState: "United Kingdom",
     components: { attribution: 10, normAdherence: 15, deorbitCompliance: 22, escalationCoupling: 48 },
     note: "Well-regulated under UK Space Industry Act. Moderate escalation coupling from government/military customers.",
   },
   {
     constellation: "Guowang",
-    score: 82,
+    licensingState: "China",
     components: { attribution: 72, normAdherence: 88, deorbitCompliance: 92, escalationCoupling: 76 },
     note: "Highest-risk planned constellation. No public debris mitigation plan, no public report of national LTS Guidelines implementation, no ITU coordination agreement with existing NGSO operators.",
   },
   {
     constellation: "Thousand Sails",
-    score: 78,
+    licensingState: "China",
     components: { attribution: 68, normAdherence: 85, deorbitCompliance: 88, escalationCoupling: 72 },
     note: "First launches August 2024 without public frequency coordination or debris mitigation commitments. Operating in regime with no binding deorbit obligation.",
   },
   {
     constellation: "GPS",
-    score: 28,
+    licensingState: "United States",
     components: { attribution: 5, normAdherence: 10, deorbitCompliance: 15, escalationCoupling: 82 },
     note: "Excellently governed military system, but escalation coupling is inherently extreme — any threat to GPS is a national security crisis.",
   },
   {
     constellation: "GLONASS",
-    score: 55,
+    licensingState: "Russia",
     components: { attribution: 25, normAdherence: 62, deorbitCompliance: 52, escalationCoupling: 80 },
     note: "State-operated military/civilian system. Russia's partial LTS adoption and non-participation in Artemis Accords elevate norm adherence risk.",
   },
   {
     constellation: "BeiDou",
-    score: 58,
+    licensingState: "China",
     components: { attribution: 30, normAdherence: 72, deorbitCompliance: 48, escalationCoupling: 82 },
     note: "Multi-orbit military/civilian system. No public report of China's national implementation of the LTS Guidelines (adopted by COPUOS consensus in 2019) and non-participation in the Artemis Accords elevate governance risk.",
   },
 ];
 
+const AUTHOR = "author judgement";
+
+export const REGIME_GOVERNANCE_SCORES = REGIME_INPUTS.map((r) => ({
+  ...r,
+  overallScore: governanceOverall(r.components),
+  componentBasis: { attribution: AUTHOR, normAdherence: AUTHOR, deorbitCompliance: AUTHOR, escalationCoupling: AUTHOR },
+}));
+
+export const CONSTELLATION_GOVERNANCE_SCORES = CONSTELLATION_INPUTS.map((c) => {
+  const derived = normAdherenceFromMatrix(TREATY_COMPLIANCE_MATRIX, TREATY_COLUMNS, c.licensingState);
+  const components = { ...c.components, normAdherence: derived ?? c.components.normAdherence };
+  return {
+    ...c,
+    components,
+    score: governanceOverall(components),
+    componentBasis: {
+      attribution: AUTHOR,
+      normAdherence: derived === null ? `${AUTHOR} (${c.licensingState} is not in the compliance matrix)` : `derived from the compliance matrix (${c.licensingState})`,
+      deorbitCompliance: AUTHOR,
+      escalationCoupling: AUTHOR,
+    },
+  };
+});

@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { INCIDENTS, INCIDENT_TYPES, SEVERITY_LEVELS, CONFIDENCE_LEVELS, SOURCE_TYPES, getTypeColor } from "../data/incidents";
 import StarField from "../components/StarField";
+import { riskIndex as computeRiskIndex } from "../data/scoring";
 
 function ScoreBar({ label, value, color }) {
   return (
@@ -39,7 +40,7 @@ export default function IncidentDetailPage() {
   const typeMeta      = INCIDENT_TYPES[inc.type]   || {};
   const severityMeta  = SEVERITY_LEVELS[inc.severity] || {};
   const confidenceMeta = CONFIDENCE_LEVELS[inc.confidence] || {};
-  const riskIndex = (((5 - inc.legibility) + inc.reversibility + inc.escalation) / 3).toFixed(2);
+  const riskIndex = computeRiskIndex(inc).toFixed(2);
 
   const prevInc = INCIDENTS.find((i) => i.id === inc.id - 1);
   const nextInc = INCIDENTS.find((i) => i.id === inc.id + 1);

@@ -1,3 +1,4 @@
+import { isSalami } from "./scoring.js";
 // ─── Incident type taxonomy ────────────────────────────────────────────────
 export const INCIDENT_TYPES = {
   proximity: { label: "Proximity Ops",    color: "#4488ff", glow: "#4488ff55" },
@@ -155,7 +156,9 @@ const CONTESTED_COLOR = "#64748b"; // contested / unresolved share a neutral gre
 //   relatedRecords   records in another Faultline dataset that a cited source
 //                    names together with this one: { id, sourceUrl }
 // No record names a legal instrument, so there is no instrumentsInvoked field yet.
-export const INCIDENTS = [
+// Records as coded. `salamiTactic` is derived from the scores (see scoring.js),
+// so it is not coded here.
+const INCIDENT_RECORDS = [
   {
     id: 1,
     title: "China Lasers US Reconnaissance Satellite",
@@ -177,7 +180,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 5,
     escalation: 2,
-    salamiTactic: true,
     tags: ["Low Legibility", "Reversible", "Deniable", "Salami Tactic", "Sensor Denial"],
     source: "Defense News Sep 2006; Aviation Week & Space Technology Sep 2006; US Congressional testimony (2007)",
     sourceTitle: "SpaceNews: NRO Confirms Chinese Laser Test Illuminated U.S. Spacecraft (3 Oct 2006)",
@@ -204,12 +206,45 @@ export const INCIDENTS = [
     legibility: 5,
     reversibility: 1,
     escalation: 5,
-    salamiTactic: false,
     tags: ["Hard Kill ASAT", "Major Debris Event", "International Protest", "Irreversible", "LEO Hazard"],
     source: "NASA ODPO Orbital Debris Quarterly News Vol. 11 No. 2 (2007); US State Dept statement Jan 2007",
     sourceTitle: "NASA ODPO / US State Dept",
     sourceType: "official",
     sourceUrl: "https://orbitaldebris.jsc.nasa.gov/quarterly-news/pdfs/odqnv11i2.pdf",
+    differentiation: {
+      distinguishability: "high",
+      dualUseBasis:
+        "A direct-ascent kinetic interceptor destroying a satellite has no benign reading: the hardware and the effect (a debris cloud of more than 3,500 catalogued fragments) identify a weapons test.",
+      rationale:
+        "The observable characteristics — an intercept and the resulting debris — make the purpose unambiguous even before any official statement.",
+      confidence: "confirmed",
+      sources: [
+        { label: "NASA ODPO, Orbital Debris Quarterly News 11-2 (April 2007)", url: "https://orbitaldebris.jsc.nasa.gov/quarterly-news/pdfs/odqnv11i2.pdf", date: "2007-04" },
+      ],
+    },
+    interpretation: {
+      framings: [
+        {
+          actor: "China (Foreign Ministry)",
+          label: "A test 'not targeted against any country' that 'does not pose a threat to any country' (spokesman Liu Jianchao)",
+          source: { label: "AP via The Spokesman-Review, 'China confirms missile test'", url: "https://www.spokesman.com/stories/2007/jan/24/china-confirms-missile-test/", date: "2007-01-24" },
+        },
+        {
+          actor: "United States",
+          label: "A debris-generating test that endangers other satellites (US officials' reaction)",
+          source: { label: "AP via The Spokesman-Review, 'China confirms missile test'", url: "https://www.spokesman.com/stories/2007/jan/24/china-confirms-missile-test/", date: "2007-01-24" },
+        },
+      ],
+      prevailing: "United States and co-sponsors of UNGA resolution 77/41",
+      authorityHolder: "United States and co-sponsors of UNGA resolution 77/41",
+      invokedTerms: ["destructive (direct-ascent ASAT test)", "threat"],
+      status: "settled",
+      confidence: "assessed",
+      note: "The debris-generating framing later anchored UNGA resolution 77/41 (7 Dec 2022), which calls on states not to conduct destructive direct-ascent ASAT tests; it passed 155–9–9, with China voting against.",
+      sources: [
+        { label: "UN Digital Library: A/RES/77/41, Destructive direct-ascent anti-satellite missile testing", url: "https://digitallibrary.un.org/record/3996915", date: "2022-12-07" },
+      ],
+    },
   },
   {
     id: 3,
@@ -232,7 +267,6 @@ export const INCIDENTS = [
     legibility: 4,
     reversibility: 2,
     escalation: 3,
-    salamiTactic: false,
     tags: ["Hard Kill ASAT", "SM-3", "Fuel Hazard Justification", "Low Debris Orbit"],
     source: "DoD Press Briefing Feb 20 2008; NASA official statement; Space News Feb 2008",
     sourceTitle: "US DoD Press Briefing / NASA",
@@ -259,7 +293,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 2,
-    salamiTactic: true,
     tags: ["Low Legibility", "Unacknowledged RPO", "Salami Tactic", "Dual-Use Technology"],
     source: "Weeden (2014) 'Chinese ASAT Policy' IFRI; SWF Space Threat Assessment 2019",
     sourceTitle: "Secure World Foundation: Global Counterspace Capabilities (April 2018), PDF p. 21 and Table 1-1",
@@ -287,7 +320,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 1,
     escalation: 4,
-    salamiTactic: false,
     tags: ["GPS Spoofing", "UAV Capture", "Navigation Deception", "Intelligence Loss"],
     source: "Christian Science Monitor Dec 2011; Bhattacherjee (2012) Int'l Journal of Aviation Psychology; IRGC official statement",
     sourceTitle: "Christian Science Monitor: Exclusive: Iran hijacked US drone, says Iranian engineer (15 Dec 2011)",
@@ -314,7 +346,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 5,
     escalation: 3,
-    salamiTactic: true,
     tags: ["Aviation Disruption", "Maritime Disruption", "Asymmetric Coercion", "Salami Tactic"],
     source: "Korea Communications Commission Report (2012); ROK MND statement; GPS World Apr 2012",
     sourceTitle: "ROK Ministry of Land, Transport and Maritime Affairs briefing on GPS interference affecting 252 aircraft (korea.kr)",
@@ -341,7 +372,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 2,
-    salamiTactic: true,
     tags: ["Robotic Arm", "Dual-Use Technology", "Debris Removal Cover", "Salami Tactic"],
     source: "SWF Space Threat Assessment 2019; AIAA SPACE 2014; Aviation Week Jul 2013",
     sourceTitle: "SWF / AIAA SPACE 2014",
@@ -368,7 +398,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 3,
-    salamiTactic: true,
     tags: ["Inspector Satellite", "Unacknowledged RPO", "Dual-Use", "Salami Tactic", "Low Legibility"],
     source: "SWF Space Threat Assessment 2019; Kelso (2014) CelesTrak analysis; SpaceNews Aug 2014",
     sourceTitle: "Secure World Foundation: Global Counterspace Capabilities (April 2018), PDF pp. 49 and 52",
@@ -396,7 +425,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 5,
     escalation: 3,
-    salamiTactic: true,
     tags: ["GEO RPO", "Signal Interception Risk", "Reversible Probe", "Salami Tactic", "Low Legibility"],
     source: "Weeden & Samson (2016) Space Policy Institute; SpaceNews Oct 2015",
     sourceTitle: "SpaceNews: Russian Satellite Maneuvers, Silence Worry Intelsat (9 Oct 2015)",
@@ -426,7 +454,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 2,
-    salamiTactic: true,
     tags: ["APT Turla", "C2 Obfuscation", "Satellite Downlink Abuse", "Weaponized Interdependence", "Attribution Evasion"],
     source: "Kaspersky Lab (2015) 'Satellite Turla: APT Command and Control in the Sky'; Symantec Turla blog 2015",
     sourceTitle: "Kaspersky Lab Security Research",
@@ -453,7 +480,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 5,
     escalation: 3,
-    salamiTactic: true,
     tags: ["Sustained Campaign", "Aviation Hazard", "Maritime Disruption", "Salami Tactic", "Coercive Signaling"],
     source: "Korea Communications Commission annual report 2016; ROK Ministry of National Defense",
     sourceTitle: "ROK Ministry of Science, ICT and Future Planning press release on GPS jamming, 4 Apr 2016 (korea.kr)",
@@ -480,7 +506,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 2,
-    salamiTactic: true,
     tags: ["GEO RPO", "Robotic Arm", "Dual-Use", "Salami Tactic", "Low Legibility"],
     source: "SWF Global Counterspace Capabilities 2020; Jones (2018) SpaceNews; CSIS Aerospace Security",
     sourceTitle: "CSIS Aerospace Security: Unusual Behavior in GEO: SJ-17",
@@ -507,7 +532,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 5,
     escalation: 3,
-    salamiTactic: true,
     tags: ["Maritime Spoofing", "AIS Manipulation", "Weaponized Interdependence", "Persistent Pattern", "Salami Tactic"],
     source: "C4ADS (2019) 'Above Us Only Stars'; MARAD Maritime Advisory 2017-010",
     sourceTitle: "C4ADS 'Above Us Only Stars' (2019)",
@@ -534,7 +558,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 3,
-    salamiTactic: true,
     tags: ["Nesting Doll Satellite", "Object Ejection", "Unconventional RPO", "Salami Tactic", "USSPACECOM Concern"],
     source: "USSPACECOM statement Aug 2017; Aviation Week Aug 2017; SWF Space Threat Assessment 2018",
     sourceTitle: "Secure World Foundation: Global Counterspace Capabilities (April 2018), PDF pp. 50 and 52",
@@ -561,8 +584,7 @@ export const INCIDENTS = [
     legibility: 4,
     reversibility: 5,
     escalation: 3,
-    salamiTactic: true,
-    tags: ["Aviation Disruption", "NATO Exercise Timing", "Persistent Pattern", "Salami Tactic", "Kola Peninsula EW"],
+    tags: ["Aviation Disruption", "NATO Exercise Timing", "Persistent Pattern", "Kola Peninsula EW"],
     source: "EASA Safety Information Bulletin 2019-02; Finnish TRAFICOM 2018; SpaceNews Nov 2018",
     sourceTitle: "EASA SIB 2019-02 / TRAFICOM Finland",
     sourceType: "aviation",
@@ -588,7 +610,6 @@ export const INCIDENTS = [
     legibility: 5,
     reversibility: 2,
     escalation: 4,
-    salamiTactic: false,
     tags: ["Hard Kill ASAT", "Deterrence Signal", "Debris Minimizing", "Public Announcement", "Fourth ASAT Nation"],
     source: "DRDO Press Release Mar 2019; PM Modi national address; NASA Administrator Bridenstine statement Apr 2019",
     sourceTitle: "PMIndia: PM addresses the Nation (27 Mar 2019)",
@@ -616,7 +637,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 4,
-    salamiTactic: true,
     tags: ["NRO Asset Shadowing", "Inspector Satellite", "Nesting Doll", "Salami Tactic", "USSPACECOM Warning"],
     source: "USSPACECOM statement Jan 2020; US State Dept statement Feb 2020; SWF Space Threat Assessment 2020",
     sourceTitle: "US State Department: Whither Arms Control in Outer Space? (6 Apr 2020), quoting Gen. Raymond on Cosmos 2542 and 2543",
@@ -643,7 +663,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 5,
     escalation: 1,
-    salamiTactic: true,
     tags: ["Maritime Spoofing", "Counter-Drone Collateral", "Persistent Pattern", "Civilian Disruption", "Salami Tactic"],
     source: "Goward & Orr (2019) GPS World; MIT Technology Review (2019); Maritime Executive 2019",
     sourceTitle: "MIT Technology Review: Ghost ships, crop circles, and soft gold: A GPS mystery in Shanghai (15 Nov 2019)",
@@ -670,7 +689,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 3,
     escalation: 4,
-    salamiTactic: true,
     tags: ["Weapons Test", "Object Ejection", "Co-orbital ASAT", "Salami Tactic"],
     source: "USSPACECOM statement Jul 2020; US Space Force Gen. Thompson (Nov 2020); SpaceNews Jul 2020",
     sourceTitle: "USSPACECOM: Russia conducts space-based anti-satellite weapons test (23 Jul 2020)",
@@ -697,7 +715,6 @@ export const INCIDENTS = [
     legibility: 5,
     reversibility: 1,
     escalation: 5,
-    salamiTactic: false,
     tags: ["Hard Kill ASAT", "ISS Debris Threat", "Irreversible", "International Condemnation", "~1,500 Fragments"],
     source: "USSPACECOM Press Release Nov 15 2021; NASA Administrator Nelson statement; US State Dept Nov 2021",
     sourceTitle: "USSPACECOM / NASA Administrator Nelson",
@@ -730,7 +747,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 1,
     escalation: 4,
-    salamiTactic: false,
     tags: ["AcidRain Wiper", "Pre-Invasion Strike", "Weaponized Interdependence", "Critical Infrastructure", "EU/US Attribution"],
     source: "CISA/FBI Advisory AA22-076A (17 Mar 2022; updated 10 May 2022 with attribution to Russian state actors); Viasat KA-SAT overview (30 Mar 2022); SentinelLabs 'AcidRain' analysis (31 Mar 2022); EU High Representative declaration (10 May 2022)",
     sourceTitle: "CISA/FBI AA22-076A",
@@ -765,8 +781,7 @@ export const INCIDENTS = [
     legibility: 4,
     reversibility: 5,
     escalation: 4,
-    salamiTactic: true,
-    tags: ["Commercial SATCOM Target", "Electronic Warfare", "Software Countermeasure", "Wartime EW", "Salami Tactic"],
+    tags: ["Commercial SATCOM Target", "Electronic Warfare", "Software Countermeasure", "Wartime EW"],
     source: "Elon Musk Twitter/X Mar 2022; SpaceX blog; Wired 'Russia Is Targeting Starlink' Mar 2022",
     sourceTitle: "SpaceX / Wired Mar 2022",
     sourceType: "company",
@@ -792,8 +807,7 @@ export const INCIDENTS = [
     legibility: 4,
     reversibility: 5,
     escalation: 4,
-    salamiTactic: true,
-    tags: ["Wartime EW", "NATO Airspace Disruption", "Persistent Campaign", "Dual Military-Civilian", "Salami Tactic"],
+    tags: ["Wartime EW", "NATO Airspace Disruption", "Persistent Campaign", "Dual Military-Civilian"],
     source: "EUROCONTROL GNSS interference notices 2022-2023; EASA SIB 2022-10R3; Finnish TRAFICOM 2022",
     sourceTitle: "EUROCONTROL / EASA SIB 2022-10R3",
     sourceType: "aviation",
@@ -820,7 +834,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 4,
     escalation: 4,
-    salamiTactic: true,
     tags: ["NRO Shadowing", "Inspector Satellite", "US Space Force Response", "Salami Tactic", "Escalating Pattern"],
     source: "USSPACECOM statement Aug 2022; SpaceNews Aug 2022; Aviation Week Aug 2022",
     sourceTitle: "SpaceNews: U.S. claims recently launched Russian satellite is an ASAT (21 May 2024), on Cosmos 2558 and USA 326",
@@ -848,7 +861,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 5,
     escalation: 2,
-    salamiTactic: true,
     tags: ["Aviation Disruption", "Counter-Drone Collateral", "Large-Scale Spoofing", "Salami Tactic", "Civilian Air Safety"],
     source: "OPSGROUP GPS Spoofing Alert Jun 2023; EASA SIB 2022-02R3; Aviation Herald 2023-2024",
     sourceTitle: "OPSGROUP: Flights misled over position, navigation failure follows (26 Sep 2023)",
@@ -875,8 +887,7 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 2,
     escalation: 3,
-    salamiTactic: true,
-    tags: ["GEO Tow Operation", "Grapple-and-Relocate", "Dual-Use RPO", "Salami Tactic", "Precedent-Setting"],
+    tags: ["GEO Tow Operation", "Grapple-and-Relocate", "Dual-Use RPO", "Precedent-Setting"],
     source: "Breaking Defense, 26 Jan 2022 (ExoAnalytic tracking: docked ~22 Jan, separated 26 Jan 2022); SWF Space Threat Assessment 2023; Jones (2023) SpaceNews; CSIS Aerospace Security 2023",
     sourceTitle: "CSIS Aerospace Security Project: Space Threat Assessment 2023, PDF p. 15",
     sourceType: "thinktank",
@@ -907,12 +918,41 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 4,
     escalation: 4,
-    salamiTactic: true,
     tags: ["Inspector Satellite", "Co-orbital RPO", "US Space Force Alert", "Escalating Pattern", "Salami Tactic"],
     source: "USSPACECOM statement May 22 2024; SpaceNews May 2024; Aviation Week May 2024",
     sourceTitle: "SpaceNews: U.S. claims recently launched Russian satellite is an ASAT (21 May 2024)",
     sourceType: "official",
     sourceUrl: "https://spacenews.com/u-s-claims-recently-launched-russian-satellite-is-an-asat/",
+    differentiation: {
+      distinguishability: "low",
+      dualUseBasis:
+        "A co-orbital satellite placed in the same orbital plane as a US reconnaissance satellite: the hardware and manoeuvring capability serve inspection, servicing, or attack positioning alike.",
+      rationale:
+        "The observable behaviour (launch into USA 314's orbital plane) is consistent with both an inspector and a counterspace weapon, so intent cannot be read from what is visible.",
+      confidence: "assessed",
+      sources: [
+        { label: "SpaceNews, 'U.S. claims recently launched Russian satellite is an ASAT'", url: "https://spacenews.com/u-s-claims-recently-launched-russian-satellite-is-an-asat/", date: "2024-05-21" },
+      ],
+    },
+    interpretation: {
+      framings: [
+        {
+          actor: "United States (USSPACECOM)",
+          label: "Likely a counterspace weapon presumably capable of attacking other satellites in low Earth orbit",
+          source: { label: "SpaceNews, 'U.S. claims recently launched Russian satellite is an ASAT'", url: "https://spacenews.com/u-s-claims-recently-launched-russian-satellite-is-an-asat/", date: "2024-05-21" },
+        },
+        {
+          actor: "Russia (Deputy Foreign Minister Ryabkov)",
+          label: "'Fake news'; Russia's policy against strike weapons in orbit is unchanged",
+          source: { label: "Reuters via Stars and Stripes, 'Russia denies US charge that it put anti-satellite weapon in space'", url: "https://www.stripes.com/theaters/europe/2024-05-22/russia-weapon-launch-denial-13937447.html", date: "2024-05-22" },
+        },
+      ],
+      prevailing: "contested",
+      authorityHolder: null,
+      invokedTerms: ["counterspace weapon", "weapons in space"],
+      status: "contested",
+      confidence: "assessed",
+    },
   },
   {
     id: 28,
@@ -934,7 +974,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 5,
     escalation: 3,
-    salamiTactic: true,
     tags: ["GPS Spoofing Pandemic", "Multi-Actor", "Aviation Safety", "Salami Tactic", "Normalization of EW"],
     source: "OPSGROUP 2024 GPS Spoofing Annual Review; EASA SIB 2022-02R3; FAA GPS advisory 2024",
     sourceTitle: "OPSGROUP: GPS Spoofing: Final Report published by WorkGroup (6 Sep 2024)",
@@ -943,10 +982,10 @@ export const INCIDENTS = [
   },
 
   // ─── ILLUSTRATIVE sample incidents (FICTIONAL) ────────────────────────────
-  // These two entries are NOT real events. They exist only so the
-  // Differentiation layer renders with concrete coded scores. Real incidents
-  // above are deliberately left uncoded (no `differentiation` field). Do not
-  // cite these as evidence of anything.
+  // These entries are NOT real events. They show every coding state of the
+  // Differentiation and Interpretation layers. Of the real incidents above,
+  // Fengyun-1C (2) and Cosmos 2576 (27) are coded with sources; the rest are
+  // uncoded. Do not cite the illustrative entries as evidence of anything.
   {
     id: 901,
     title: "ILLUSTRATIVE — Co-orbital Inspector Shadows Foreign GEO Comsat",
@@ -967,7 +1006,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 4,
     escalation: 4,
-    salamiTactic: true,
     tags: ["ILLUSTRATIVE", "Co-orbital RPO", "Dual-Use Hardware", "Low Distinguishability"],
     source: "Illustrative sample — not a real incident",
     sourceTitle: "Illustrative sample",
@@ -1006,7 +1044,6 @@ export const INCIDENTS = [
     legibility: 5,
     reversibility: 1,
     escalation: 5,
-    salamiTactic: false,
     tags: ["ILLUSTRATIVE", "Direct-Ascent ASAT", "Debris-Generating", "High Distinguishability"],
     source: "Illustrative sample — not a real incident",
     sourceTitle: "Illustrative sample",
@@ -1045,7 +1082,6 @@ export const INCIDENTS = [
     legibility: 3,
     reversibility: 4,
     escalation: 3,
-    salamiTactic: true,
     tags: ["ILLUSTRATIVE", "Due Regard", "Contested Framing", "Interpretive Authority"],
     source: "Illustrative sample — not a real incident",
     sourceTitle: "Illustrative sample",
@@ -1083,7 +1119,6 @@ export const INCIDENTS = [
     legibility: 2,
     reversibility: 5,
     escalation: 2,
-    salamiTactic: true,
     tags: ["ILLUSTRATIVE", "Harmful Interference", "Unresolved", "Interpretive Authority"],
     source: "Illustrative sample — not a real incident",
     sourceTitle: "Illustrative sample",
@@ -1103,6 +1138,8 @@ export const INCIDENTS = [
     },
   },
 ];
+
+export const INCIDENTS = INCIDENT_RECORDS.map((inc) => ({ ...inc, salamiTactic: isSalami(inc) }));
 
 // ─── Derived helpers ────────────────────────────────────────────────────────
 export const getTypeColor       = (type) => INCIDENT_TYPES[type]?.color  ?? "#94a3b8";

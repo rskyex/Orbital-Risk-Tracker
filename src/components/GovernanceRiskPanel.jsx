@@ -48,6 +48,9 @@ function MethodologyTooltip({ show, onClose }) {
             </div>
             <p style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.6, margin: 0 }}>{c.description}</p>
             <p style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4, fontStyle: "italic" }}>{c.scale}</p>
+            <p style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>
+              <strong>Basis:</strong> {c.basis}. {c.rubric}
+            </p>
           </div>
         ))}
         <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
@@ -95,7 +98,8 @@ export default function GovernanceRiskPanel() {
           <h3 className="data-layer-title">Governance Risk Score</h3>
           <p className="data-layer-desc">
             Composite 0–100 index measuring governance deficit relative to risk.
-            Higher scores indicate greater governance gaps.{" "}
+            Higher scores indicate greater governance gaps. The overall score is the mean of the
+            four sub-scores; each sub-score shows whether it is derived or author judgement.{" "}
             <button className="inline-link-btn" onClick={() => setShowMethodology(true)}>
               View methodology
             </button>
@@ -158,7 +162,10 @@ export default function GovernanceRiskPanel() {
                   const val = selected.components[c.id];
                   return (
                     <div key={c.id} className="governance-component-row">
-                      <span style={{ fontSize: 12, color: "var(--text-secondary)", flex: 1 }}>{c.label}</span>
+                      <span style={{ fontSize: 12, color: "var(--text-secondary)", flex: 1 }}>
+                        {c.label}
+                        <span style={{ display: "block", fontSize: 10, color: "var(--text-muted)" }}>{selected.componentBasis?.[c.id]}</span>
+                      </span>
                       <div style={{ flex: 2, height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 3 }}>
                         <div style={{ width: `${val}%`, height: "100%", background: getScoreColor(val), borderRadius: 3, transition: "width 0.4s ease" }} />
                       </div>

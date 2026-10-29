@@ -1,5 +1,6 @@
 import RiskRadar from "./RiskRadar";
 import { TYPE_COLORS, TYPE_LABELS } from "../data/incidents";
+import { riskIndex as computeRiskIndex } from "../data/scoring";
 
 export default function DetailPanel({ incident }) {
   if (!incident) {
@@ -14,10 +15,7 @@ export default function DetailPanel({ incident }) {
   }
 
   const typeColor = TYPE_COLORS[incident.type];
-  const riskIndex = (
-    ((5 - incident.legibility) + incident.reversibility + incident.escalation) /
-    3
-  ).toFixed(1);
+  const riskIndex = computeRiskIndex(incident).toFixed(1);
 
   return (
     <div className="detail-panel">
@@ -67,8 +65,10 @@ export default function DetailPanel({ incident }) {
 
       {incident.salamiTactic === false && (
         <div className="warning-banner">
-          ⚠ This incident is <strong>NOT</strong> a salami tactic — it is irreversible and
-          immediately interpretable as an aggressive act.
+          ⚠ This incident is <strong>NOT</strong> a salami tactic —{" "}
+          {incident.reversibility <= 2
+            ? "its effects are hard or impossible to undo."
+            : "it is clearly interpretable rather than deniable."}
         </div>
       )}
 

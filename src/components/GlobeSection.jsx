@@ -252,8 +252,9 @@ export default function GlobeSection() {
                   )}
 
                 <p style={{ marginTop: 20, fontSize: 11, color: "var(--text-muted)" }}>
-                  Real incidents are deliberately left uncoded; ILLUSTRATIVE
-                  samples render the layer.
+                  Two documented incidents are coded (Fengyun-1C, Cosmos 2576),
+                  with sources; the rest are uncoded. ILLUSTRATIVE samples are
+                  fictional.
                 </p>
               </div>
             ) : (

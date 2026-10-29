@@ -1,10 +1,11 @@
 // Dataset metadata and versioned exports for verifiers.
 // Adds to (does not change) the incident data in ./incidents.js.
 import { INCIDENTS } from "./incidents";
+import { riskIndex } from "./scoring.js";
 
 // Bump these whenever incident records change.
 // DATASET_LAST_UPDATED is the date of the last change to src/data/incidents.js.
-export const DATASET_VERSION = "1.2.0";
+export const DATASET_VERSION = "1.3.0";
 export const DATASET_LAST_UPDATED = "2026-10-29";
 export const SITE_URL = "https://orbitalrisktracker.vercel.app";
 
@@ -36,9 +37,10 @@ export const INCIDENT_COLUMNS = [
   { key: "severity", description: "low, medium, high or critical." },
   { key: "confidence", description: "Confidence in the account of the event." },
   { key: "legibility", description: "Jervis-based score, 1 to 5 (researcher judgement)." },
-  { key: "reversibility", description: "Jervis-based score, 1 to 5 (researcher judgement)." },
+  { key: "reversibility", description: "Jervis-based score, 1 (irreversible) to 5 (instantly reversible) (researcher judgement)." },
   { key: "escalation", description: "Jervis-based score, 1 to 5 (researcher judgement)." },
-  { key: "salamiTactic", description: "true if coded as a gradual, deniable step." },
+  { key: "salamiTactic", description: "Computed: true when legibility ≤ 3 and reversibility ≥ 3 (src/data/scoring.js)." },
+  { key: "riskIndex", description: "Computed: ((6 − legibility) + (6 − reversibility) + escalation) / 3, range 1–5." },
   { key: "tags", description: "Tags, separated by \" | \"." },
   { key: "source", description: "Source citation text." },
   { key: "sourceTitle", description: "Short source title." },
@@ -67,7 +69,7 @@ export function incidentsMeta() {
   };
 }
 
-const withFlag = (inc) => ({ ...inc, illustrative: isIllustrative(inc) });
+const withFlag = (inc) => ({ ...inc, illustrative: isIllustrative(inc), riskIndex: Number(riskIndex(inc).toFixed(2)) });
 
 export function incidentsJson() {
   return JSON.stringify({ meta: incidentsMeta(), records: INCIDENTS.map(withFlag) }, null, 2);
